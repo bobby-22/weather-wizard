@@ -14,8 +14,11 @@
                     <h1>20 °C</h1>
                 </div>
             </div>
+            <hr class="rounded-divider" />
             <div class="additional-info">
-                <p>Wednesday, 12:45</p>
+                <p>
+                    Wednesday, <span class="additional-info-time">12:45</span>
+                </p>
                 <span class="highest">H:23°</span>
                 <span class="lowest">L:17°</span>
             </div>
@@ -44,14 +47,19 @@
             </div>
             <div class="small-cards">
                 <div class="small-card" v-for="card in 7">
-                    <div class="small-card-header">
-                        Time
+                    <div class="small-card-header-1">
+                        12:45
+                    </div>
+                    <div class="small-card-header-2">
+                        25%
                     </div>
                     <div class="small-card-body">
-                        Conditions
+                        <img
+                            src="../assets/cloud_day_forecast_rain_rainy_icon.png"
+                        />
                     </div>
                     <div class="small-card-footer">
-                        Degree
+                        20°
                     </div>
                 </div>
             </div>
@@ -59,15 +67,52 @@
                 <h1>Conditions for today</h1>
             </div>
             <div class="big-cards">
-                <div class="big-card" v-for="card in 9">
+                <div class="big-card">
                     <div class="big-card-header">
-                        Title
+                        Sunrise & Sunset
                     </div>
                     <div class="big-card-body">
                         Conditions
                     </div>
-                    <div class="big-card-footer">
-                        Additional info
+                </div>
+                <div class="big-card">
+                    <div class="big-card-header">
+                        Wind speed
+                    </div>
+                    <div class="big-card-body">
+                        Conditions
+                    </div>
+                </div>
+                <div class="big-card">
+                    <div class="big-card-header">
+                        UV Index
+                    </div>
+                    <div class="big-card-body">
+                        Conditions
+                    </div>
+                </div>
+                <div class="big-card">
+                    <div class="big-card-header">
+                        Humidity
+                    </div>
+                    <div class="big-card-body">
+                        Conditions
+                    </div>
+                </div>
+                <div class="big-card">
+                    <div class="big-card-header">
+                        Air quality
+                    </div>
+                    <div class="big-card-body">
+                        Conditions
+                    </div>
+                </div>
+                <div class="big-card">
+                    <div class="big-card-header">
+                        Abrubt changes
+                    </div>
+                    <div class="big-card-body">
+                        Conditions
                     </div>
                 </div>
             </div>
@@ -86,9 +131,12 @@ export default {
     display: flex;
 }
 .main-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-basis: 20%;
     max-width: 500px;
     padding: 30px;
-    flex-basis: 30%;
     background-color: #fdfdfd;
 }
 .search-bar {
@@ -117,27 +165,34 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 35px;
 }
 .main-weather-condition img {
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
 }
 .main-card-header h1 {
-    font-weight: 600;
-    font-size: 72px;
+    font-weight: 400;
+    font-size: 58px;
     margin-top: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     color: #4a4a4a;
+}
+.rounded-divider {
+    width: 100%;
+    border-top: 1px solid #e1e1e1;
+    border-radius: 5px;
+    margin: 0px;
 }
 p {
     margin: 0px;
 }
 .additional-info {
     font-size: 20px;
-    padding-bottom: 30px;
     color: #4a4a4a;
-    border-bottom: 1px solid #e1e1e1;
+}
+.additional-info-time {
+    font-weight: 200;
+    color: #999999;
 }
 .highest {
     margin-right: 20px;
@@ -145,18 +200,15 @@ p {
 .media img {
     object-fit: cover;
     min-width: 100%;
-    max-height: 240px;
+    max-height: 170px;
     border-radius: 10px;
-}
-.radar {
-    margin-top: 30px;
-    margin-bottom: 5px;
 }
 .city {
     position: relative;
-    opacity: 0.8;
+    opacity: 0.7;
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
 }
 .city-name {
     position: absolute;
@@ -199,7 +251,10 @@ p {
     opacity: 0.8;
 }
 .secondary-card {
-    flex-basis: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-basis: 80%;
     padding: 30px;
 }
 .navbar {
@@ -213,6 +268,7 @@ p {
 }
 .today {
     color: #4a4a4a;
+    text-underline-offset: 5px;
 }
 .weekly {
     color: #999999;
@@ -246,19 +302,38 @@ p {
     justify-content: space-between;
     align-items: center;
     flex-basis: 100%;
-    height: 100px;
+    min-height: 100px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     border-radius: 10px;
     padding: 15px;
     background-color: #fdfdfd;
+    backdrop-filter: blur(25px);
+}
+.small-card-header-1,
+.small-card-footer {
+    font-size: 18px;
+    color: #4a4a4a;
+}
+.small-card-header-2 {
+    font-size: 14px;
+    color: #21209c;
+}
+.small-card-body img {
+    object-fit: cover;
+    width: 61px;
+    height: 61px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .secondary-card-header h1 {
     font-weight: 500;
-    font-size: 36px;
+    font-size: 32px;
     color: #4a4a4a;
 }
 .big-cards {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 100%;
     gap: 15px;
 }
 .big-card {
@@ -266,10 +341,15 @@ p {
     flex-direction: column;
     justify-content: space-between;
     flex-basis: 100%;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
     border-radius: 10px;
-    height: 220px;
     overflow: auto;
     padding: 15px;
     background-color: #fdfdfd;
+}
+.big-card-header,
+.big-card-footer {
+    font-size: 18px;
+    color: #616161;
 }
 </style>
