@@ -11,7 +11,9 @@
             <div class="main-weather-condition">
                 <img src="../assets/cloud_day_forecast_rain_rainy_icon.png" />
                 <div class="main-card-header">
-                    <h1>20 °C</h1>
+                    <h1>
+                        {{ Math.round(currentConditions.temp - 273.15) }} °C
+                    </h1>
                 </div>
             </div>
             <hr class="rounded-divider" />
@@ -46,12 +48,18 @@
                 </div>
             </div>
             <div class="small-cards">
-                <div class="small-card" v-for="card in 7">
-                    <div class="small-card-header-1">
-                        12:45
+                <div
+                    class="small-card"
+                    v-for="(condition, index) in hourlyConditions"
+                >
+                    <div class="small-card-header-1" v-if="index === 0">
+                        Now
                     </div>
-                    <div class="small-card-header-2">
-                        25%
+                    <div class="small-card-header-1" v-else>
+                        {{ new Date(condition.dt * 1000).getHours() }}:00
+                    </div>
+                    <div class="small-card-header-2" v-if="condition.pop != 0">
+                        {{ Math.round(condition.pop * 100) }}%
                     </div>
                     <div class="small-card-body">
                         <img
@@ -59,7 +67,7 @@
                         />
                     </div>
                     <div class="small-card-footer">
-                        20°
+                        {{ Math.round(condition.temp - 273.15) }}°
                     </div>
                 </div>
             </div>
@@ -72,57 +80,64 @@
                         Sunrise & Sunset
                     </div>
                     <div class="big-card-body">
-                        Conditions
+                        <div class="sunrise">
+                            <img
+                                src="../assets/horizont_morning_sun_sunrise_weather_icon.png"
+                            />
+                            <span class="sunrise-info">
+                                <p>18:30</p>
+                                <p>in 7 hours and 45 minutes</p>
+                            </span>
+                        </div>
+                        <div class="sunset">
+                            <img
+                                src="../assets/horizont_morning_sun_sunrise_weather_icon.png"
+                            />
+                            <span class="sunset-info">
+                                <p>6:00</p>
+                                <p>in 17 hours and 15 minutes</p>
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div class="big-card">
-                    <div class="big-card-header">
-                        Wind speed
-                    </div>
-                    <div class="big-card-body">
-                        Conditions
-                    </div>
-                </div>
-                <div class="big-card">
-                    <div class="big-card-header">
-                        UV Index
-                    </div>
-                    <div class="big-card-body">
-                        Conditions
-                    </div>
-                </div>
-                <div class="big-card">
-                    <div class="big-card-header">
-                        Humidity
-                    </div>
-                    <div class="big-card-body">
-                        Conditions
-                    </div>
-                </div>
-                <div class="big-card">
-                    <div class="big-card-header">
-                        Air quality
-                    </div>
-                    <div class="big-card-body">
-                        Conditions
-                    </div>
-                </div>
-                <div class="big-card">
-                    <div class="big-card-header">
-                        Abrubt changes
-                    </div>
-                    <div class="big-card-body">
-                        Conditions
-                    </div>
-                </div>
+                <div class="big-card" v-for="card in 5"></div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+// import Card from "../components/Card.vue";
+import weatherAPI from "../axios";
 export default {
     name: "Dashboard",
+    components: {
+        // Card,
+    },
+    data() {
+        return {
+            currentConditions: null,
+            hourlyConditions: null,
+            dailyConditions: null,
+        };
+    },
+    methods: {
+        async getWeather() {
+            try {
+                let weatherResponse = await weatherAPI.get(
+                    `/data/2.5/onecall?lat=48.1374&lon=11.5755&exclude=minutely&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
+                );
+                this.currentConditions = weatherResponse.data.current;
+                this.hourlyConditions = weatherResponse.data.hourly.slice(0, 7);
+                this.dailyConditions = weatherResponse.data.daily;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+    },
+    created() {
+        this.getWeather();
+    },
 };
 </script>
 
@@ -142,7 +157,7 @@ export default {
 .search-bar {
     display: flex;
     font-size: 14px;
-    border-radius: 15px;
+    border-radius: 20px;
     background-color: #f5f5f5;
 }
 .search-icon {
@@ -156,7 +171,7 @@ export default {
     background-color: #f5f5f5;
 }
 .submit-button {
-    border-radius: 0px 15px 15px 0px;
+    border-radius: 0px 20px 20px 0px;
     padding: 15px;
     background-color: #21209c;
     color: #fdfdfd;
@@ -171,11 +186,11 @@ export default {
     height: 200px;
 }
 .main-card-header h1 {
-    font-weight: 400;
     font-size: 58px;
+    font-weight: 500;
     margin-top: 10px;
     margin-bottom: 0px;
-    color: #4a4a4a;
+    color: #23120b;
 }
 .rounded-divider {
     width: 100%;
@@ -188,10 +203,11 @@ p {
 }
 .additional-info {
     font-size: 20px;
+    font-weight: 500;
     color: #4a4a4a;
 }
 .additional-info-time {
-    font-weight: 200;
+    font-weight: 400;
     color: #999999;
 }
 .highest {
@@ -199,9 +215,9 @@ p {
 }
 .media img {
     object-fit: cover;
-    min-width: 100%;
+    width: 100%;
     max-height: 170px;
-    border-radius: 10px;
+    border-radius: 15px;
 }
 .city {
     position: relative;
@@ -217,8 +233,7 @@ p {
     left: 50%;
     margin: 0px;
     margin-top: -1px;
-    letter-spacing: 2px;
-    font-weight: 500;
+    font-weight: 400;
     color: #fdfdfd;
 }
 .city-controls {
@@ -226,7 +241,7 @@ p {
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
-    min-width: 100%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -267,8 +282,10 @@ p {
     margin-right: 20px;
 }
 .today {
-    color: #4a4a4a;
-    text-underline-offset: 5px;
+    font-size: 20px;
+    font-weight: 500;
+    text-underline-offset: 10px;
+    color: #23120b;
 }
 .weekly {
     color: #999999;
@@ -293,7 +310,7 @@ p {
 .small-cards {
     display: flex;
     justify-content: space-between;
-    column-gap: 15px;
+    column-gap: 10px;
     margin-top: 30px;
 }
 .small-card {
@@ -303,8 +320,8 @@ p {
     align-items: center;
     flex-basis: 100%;
     min-height: 100px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+    border-radius: 15px;
     padding: 15px;
     background-color: #fdfdfd;
     backdrop-filter: blur(25px);
@@ -312,6 +329,7 @@ p {
 .small-card-header-1,
 .small-card-footer {
     font-size: 18px;
+    font-weight: 500;
     color: #4a4a4a;
 }
 .small-card-header-2 {
@@ -326,9 +344,9 @@ p {
     margin-bottom: 10px;
 }
 .secondary-card-header h1 {
-    font-weight: 500;
     font-size: 32px;
-    color: #4a4a4a;
+    font-weight: 500;
+    color: #23120b;
 }
 .big-cards {
     display: grid;
@@ -337,19 +355,32 @@ p {
     gap: 15px;
 }
 .big-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-basis: 100%;
-    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
-    border-radius: 10px;
-    overflow: auto;
+    border-radius: 15px;
     padding: 15px;
     background-color: #fdfdfd;
+    min-height: 200px;
 }
-.big-card-header,
-.big-card-footer {
+.big-card-header {
+    color: #999999;
+}
+.big-card-body {
     font-size: 18px;
-    color: #616161;
+    margin-top: 30px;
+    color: #4a4a4a;
+}
+.sunrise,
+.sunset {
+    display: flex;
+    align-items: center;
+}
+.sunrise img,
+.sunset img {
+    object-fit: cover;
+    width: 78px;
+    height: 78px;
+    margin-right: 10px;
+}
+.sunset {
+    margin-top: 10px;
 }
 </style>
