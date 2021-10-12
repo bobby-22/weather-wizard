@@ -114,24 +114,28 @@
                         </div>
                     </div>
                 </div>
-                <div class="big-card" v-for="card in 5"></div>
+                <Card
+                    v-for="card in 5"
+                    v-bind:weatherResponse="weatherResponse"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-// import Card from "../components/Card.vue";
+import Card from "../components/Card.vue";
 import weatherAPI from "../axios";
 export default {
     name: "Dashboard",
     components: {
-        // Card,
+        Card,
     },
     data() {
         return {
             currentDay: null,
             currentTime: null,
+            weatherResponse: Object,
             currentConditions: Object,
             hourlyConditions: Object,
             dailyConditions: Object,
@@ -143,6 +147,7 @@ export default {
                 let weatherResponse = await weatherAPI.get(
                     `/data/2.5/onecall?lat=48.1374&lon=11.5755&exclude=minutely&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
                 );
+                this.weatherResponse = weatherResponse;
                 this.currentConditions = weatherResponse.data.current;
                 this.hourlyConditions = weatherResponse.data.hourly.slice(0, 7);
                 this.dailyConditions = weatherResponse.data.daily;
@@ -195,7 +200,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .container {
     display: flex;
 }
@@ -247,14 +252,14 @@ export default {
 }
 .main-card-header h1 {
     font-size: 58px;
-    font-weight: 400;
+    font-weight: 700;
     margin-top: 10px;
     margin-bottom: 0px;
     color: #23120b;
 }
 .main-card-header h2 {
     font-size: 20px;
-    font-weight: 400;
+    font-weight: 600;
     margin-top: 0px;
     margin-bottom: 0px;
     color: #21209c;
@@ -270,11 +275,11 @@ p {
 }
 .additional-info {
     font-size: 20px;
-    font-weight: 400;
-    color: #4a4a4a;
+    font-weight: 600;
+    color: #23120b;
 }
 .additional-info-time {
-    font-weight: 300;
+    font-weight: 400;
     color: #999999;
 }
 .current-condition {
@@ -300,7 +305,7 @@ p {
     left: 50%;
     margin: 0px;
     margin-top: -1px;
-    font-weight: 400;
+    font-weight: 600;
     color: #fdfdfd;
 }
 .city-controls {
@@ -350,7 +355,7 @@ p {
 }
 .today {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 700;
     text-underline-offset: 10px;
     color: #23120b;
 }
@@ -396,7 +401,7 @@ p {
 .small-card-header-1,
 .small-card-footer {
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     color: #4a4a4a;
 }
 .small-card-header-2 {
@@ -412,7 +417,7 @@ p {
 }
 .secondary-card-header h1 {
     font-size: 32px;
-    font-weight: 500;
+    font-weight: 700;
     color: #23120b;
 }
 .big-cards {
