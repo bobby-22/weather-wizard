@@ -12,14 +12,21 @@
                 <img src="../assets/cloud_day_forecast_rain_rainy_icon.png" />
                 <div class="main-card-header">
                     <h1>
-                        {{ Math.round(currentConditions.temp - 273.15) }} °C
+                        {{ Math.round(hourlyConditions[0].temp - 273.15) }} °C
                     </h1>
+                    <h2 v-if="hourlyConditions[0].pop">
+                        <i class="fas fa-tint"></i>
+                        {{ Math.round(hourlyConditions[0].pop * 100) }}%
+                    </h2>
                 </div>
             </div>
             <hr class="rounded-divider" />
             <div class="additional-info">
                 <p>
-                    Wednesday, <span class="additional-info-time">12:45</span>
+                    {{ currentDay }},
+                    <span class="additional-info-time">
+                        {{ currentTime }}
+                    </span>
                 </p>
                 <span class="highest">H:23°</span>
                 <span class="lowest">L:17°</span>
@@ -116,7 +123,8 @@ export default {
     },
     data() {
         return {
-            currentConditions: null,
+            currentDay: null,
+            currentTime: null,
             hourlyConditions: null,
             dailyConditions: null,
         };
@@ -127,16 +135,40 @@ export default {
                 let weatherResponse = await weatherAPI.get(
                     `/data/2.5/onecall?lat=48.1374&lon=11.5755&exclude=minutely&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
                 );
-                this.currentConditions = weatherResponse.data.current;
                 this.hourlyConditions = weatherResponse.data.hourly.slice(0, 7);
                 this.dailyConditions = weatherResponse.data.daily;
             } catch (error) {
                 console.log(error);
             }
         },
+        getCurrentDay() {
+            this.currentDay = new Date().toLocaleDateString("en-US", {
+                weekday: "long",
+            });
+        },
+        getCurrentTime() {
+            let hour = new Date().getHours();
+            let minutes = new Date().getMinutes();
+            let seconds = new Date().getSeconds()
+            if (hour < 10) {
+                hour = "0" + hour;
+            } else if (minutes < 10) {
+                minutes = "0" + minutes;
+            } else if (seconds < 10) {
+                seconds = "0" + seconds
+            }
+            this.currentTime = hour + ":" + minutes + ":" + seconds;
+        },
     },
     created() {
         this.getWeather();
+        this.getCurrentDay();
+        this.getCurrentTime();
+    },
+    mounted() {
+        setInterval(() => {
+            this.getCurrentTime();
+        }, 1000);
     },
 };
 </script>
@@ -185,12 +217,24 @@ export default {
     width: 200px;
     height: 200px;
 }
+.main-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .main-card-header h1 {
     font-size: 58px;
     font-weight: 500;
     margin-top: 10px;
     margin-bottom: 0px;
     color: #23120b;
+}
+.main-card-header h2 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #21209c;
 }
 .rounded-divider {
     width: 100%;
