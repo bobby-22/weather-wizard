@@ -11,12 +11,12 @@
             <div class="main-weather-condition">
                 <img src="../assets/cloud_day_forecast_rain_rainy_icon.png" />
                 <div class="main-card-header">
-                    <h1>
-                        {{ Math.round(hourlyConditions[0].temp - 273.15) }} °C
+                    <h1 v-if="currentConditions">
+                        {{ roundNumber(currentConditions.temp - 273.15) }}°
                     </h1>
-                    <h2 v-if="hourlyConditions[0].pop">
+                    <h2 v-if="hourlyConditions[0]">
                         <i class="fas fa-tint"></i>
-                        {{ Math.round(hourlyConditions[0].pop * 100) }}%
+                        {{ roundNumber(hourlyConditions[0].pop * 100) }}%
                     </h2>
                 </div>
             </div>
@@ -28,8 +28,13 @@
                         {{ currentTime }}
                     </span>
                 </p>
-                <span class="highest">H:23°</span>
-                <span class="lowest">L:17°</span>
+                <span
+                    class="current-condition"
+                    v-if="currentConditions.weather"
+                >
+                    <i class="fas fa-cloud-rain"></i>
+                    {{ currentConditions.weather[0].description }}
+                </span>
             </div>
             <div class="media">
                 <img class="radar" src="../assets/radar.png" />
@@ -63,10 +68,10 @@
                         Now
                     </div>
                     <div class="small-card-header-1" v-else>
-                        {{ new Date(condition.dt * 1000).getHours() }}:00
+                        {{ getTime(condition.dt) }}
                     </div>
                     <div class="small-card-header-2" v-if="condition.pop != 0">
-                        {{ Math.round(condition.pop * 100) }}%
+                        {{ roundNumber(condition.pop * 100) }}%
                     </div>
                     <div class="small-card-body">
                         <img
@@ -74,7 +79,7 @@
                         />
                     </div>
                     <div class="small-card-footer">
-                        {{ Math.round(condition.temp - 273.15) }}°
+                        {{ roundNumber(condition.temp - 273.15) }}°
                     </div>
                 </div>
             </div>
@@ -92,7 +97,9 @@
                                 src="../assets/horizont_morning_sun_sunrise_weather_icon.png"
                             />
                             <span class="sunrise-info">
-                                <p>18:30</p>
+                                <p>
+                                    {{ getTime(currentConditions.sunrise) }}
+                                </p>
                                 <p>in 7 hours and 45 minutes</p>
                             </span>
                         </div>
@@ -101,7 +108,7 @@
                                 src="../assets/horizont_morning_sun_sunrise_weather_icon.png"
                             />
                             <span class="sunset-info">
-                                <p>6:00</p>
+                                <p>{{ getTime(currentConditions.sunset) }}</p>
                                 <p>in 17 hours and 15 minutes</p>
                             </span>
                         </div>
@@ -125,8 +132,9 @@ export default {
         return {
             currentDay: null,
             currentTime: null,
-            hourlyConditions: null,
-            dailyConditions: null,
+            currentConditions: Object,
+            hourlyConditions: Object,
+            dailyConditions: Object,
         };
     },
     methods: {
@@ -135,11 +143,25 @@ export default {
                 let weatherResponse = await weatherAPI.get(
                     `/data/2.5/onecall?lat=48.1374&lon=11.5755&exclude=minutely&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
                 );
+                this.currentConditions = weatherResponse.data.current;
                 this.hourlyConditions = weatherResponse.data.hourly.slice(0, 7);
                 this.dailyConditions = weatherResponse.data.daily;
             } catch (error) {
                 console.log(error);
             }
+        },
+        roundNumber(number) {
+            let roundedNumber = Math.round(number);
+            return roundedNumber;
+        },
+        getTime(dtValue) {
+            let hour = new Date(dtValue * 1000).getHours();
+            let minutes = new Date(dtValue * 1000).getMinutes();
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+            let time = hour + ":" + minutes;
+            return time;
         },
         getCurrentDay() {
             this.currentDay = new Date().toLocaleDateString("en-US", {
@@ -149,13 +171,13 @@ export default {
         getCurrentTime() {
             let hour = new Date().getHours();
             let minutes = new Date().getMinutes();
-            let seconds = new Date().getSeconds()
+            let seconds = new Date().getSeconds();
             if (hour < 10) {
                 hour = "0" + hour;
             } else if (minutes < 10) {
                 minutes = "0" + minutes;
             } else if (seconds < 10) {
-                seconds = "0" + seconds
+                seconds = "0" + seconds;
             }
             this.currentTime = hour + ":" + minutes + ":" + seconds;
         },
@@ -216,6 +238,7 @@ export default {
 .main-weather-condition img {
     width: 200px;
     height: 200px;
+    filter: drop-shadow(1px 1px 1px rgb(228, 228, 228));
 }
 .main-card-header {
     display: flex;
@@ -224,14 +247,14 @@ export default {
 }
 .main-card-header h1 {
     font-size: 58px;
-    font-weight: 500;
+    font-weight: 400;
     margin-top: 10px;
     margin-bottom: 0px;
     color: #23120b;
 }
 .main-card-header h2 {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 400;
     margin-top: 0px;
     margin-bottom: 0px;
     color: #21209c;
@@ -247,15 +270,15 @@ p {
 }
 .additional-info {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 400;
     color: #4a4a4a;
 }
 .additional-info-time {
-    font-weight: 400;
+    font-weight: 300;
     color: #999999;
 }
-.highest {
-    margin-right: 20px;
+.current-condition {
+    text-transform: capitalize;
 }
 .media img {
     object-fit: cover;
