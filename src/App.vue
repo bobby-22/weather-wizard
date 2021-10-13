@@ -9,12 +9,15 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
 
 * {
     font-family: "Comfortaa", sans-serif;
 }
 .container {
     min-height: 100vh;
+}
+::selection {
+    background-color: #FDB827;
 }
 </style>

@@ -9,31 +9,24 @@
                 <div class="submit-button">Search</div>
             </form>
             <div class="main-weather-condition">
-                <img src="../assets/cloud_day_forecast_rain_rainy_icon.png" />
+                <img src="../assets/cloud_rain_storm_sun.png" />
                 <div class="main-card-header">
-                    <h1 v-if="currentConditions">
+                    <h1>
+                        Currently
                         {{ roundNumber(currentConditions.temp - 273.15) }}°
                     </h1>
-                    <h2 v-if="hourlyConditions[0]">
-                        <i class="fas fa-tint"></i>
-                        {{ roundNumber(hourlyConditions[0].pop * 100) }}%
-                    </h2>
                 </div>
             </div>
-            <hr class="rounded-divider" />
             <div class="additional-info">
-                <p>
-                    {{ currentDay }},
+                <span>
+                    {{ getCurrentDay() }},
                     <span class="additional-info-time">
                         {{ currentTime }}
                     </span>
-                </p>
-                <span
-                    class="current-condition"
-                    v-if="currentConditions.weather"
-                >
-                    <i class="fas fa-cloud-rain"></i>
-                    {{ currentConditions.weather[0].description }}
+                </span>
+                <span class="additional-info-pop">
+                    <i class="fas fa-tint"></i>
+                    {{ roundNumber(hourlyConditions.pop * 100) }}%
                 </span>
             </div>
             <div class="media">
@@ -51,40 +44,55 @@
         <div class="secondary-card">
             <div class="navbar">
                 <div class="day">
-                    <span class="today"><u>Today</u></span>
-                    <span class="weekly">Weekly</span>
+                    <span
+                        class="today"
+                        @click="switchTodayView()"
+                        v-bind:style="[
+                            isWeekly
+                                ? { 'border-bottom': 'none' }
+                                : {
+                                      'border-bottom': '1px solid #23120b',
+                                      color: '#23120b',
+                                      'font-size': '18px',
+                                      'font-weight': '700',
+                                      transition: '0.5s',
+                                  },
+                        ]"
+                        >Today</span
+                    >
+                    <span
+                        class="weekly"
+                        @click="switchWeeklyView()"
+                        v-bind:style="[
+                            isToday
+                                ? { 'border-bottom': 'none' }
+                                : {
+                                      'border-bottom': '1px solid #23120b',
+                                      color: '#23120b',
+                                      'font-size': '18px',
+                                      'font-weight': '700',
+                                      transition: '0.5s',
+                                  },
+                        ]"
+                        >Weekly</span
+                    >
                 </div>
                 <div class="degree">
                     <span class="celsius">°C</span>
                     <span class="fahrenheit">°F</span>
                 </div>
             </div>
-            <div class="small-cards">
-                <div
-                    class="small-card"
-                    v-for="(condition, index) in hourlyConditions"
-                >
-                    <div class="small-card-header-1" v-if="index === 0">
-                        Now
-                    </div>
-                    <div class="small-card-header-1" v-else>
-                        {{ getTime(condition.dt) }}
-                    </div>
-                    <div class="small-card-header-2" v-if="condition.pop != 0">
-                        {{ roundNumber(condition.pop * 100) }}%
-                    </div>
-                    <div class="small-card-body">
-                        <img
-                            src="../assets/cloud_day_forecast_rain_rainy_icon.png"
-                        />
-                    </div>
-                    <div class="small-card-footer">
-                        {{ roundNumber(condition.temp - 273.15) }}°
-                    </div>
-                </div>
+            <div class="small-cards" v-if="isToday">
+                <HourlyConditions />
             </div>
-            <div class="secondary-card-header">
-                <h1>Conditions for today</h1>
+            <div class="small-cards" v-if="isWeekly">
+                <DailyConditions />
+            </div>
+            <div class="secondary-card-header" v-if="isToday">
+                <h1>Conditions for Today</h1>
+            </div>
+            <div class="secondary-card-header" v-if="isWeekly">
+                <h1>Conditions for {{ getCurrentDay() }}</h1>
             </div>
             <div class="big-cards">
                 <div class="big-card">
@@ -93,9 +101,7 @@
                     </div>
                     <div class="big-card-body">
                         <div class="sunrise">
-                            <img
-                                src="../assets/horizont_morning_sun_sunrise_weather_icon.png"
-                            />
+                            <img src="../assets/sunrise.png" />
                             <span class="sunrise-info">
                                 <p>
                                     {{ getTime(currentConditions.sunrise) }}
@@ -104,9 +110,7 @@
                             </span>
                         </div>
                         <div class="sunset">
-                            <img
-                                src="../assets/horizont_morning_sun_sunrise_weather_icon.png"
-                            />
+                            <img src="../assets/sunset.png" />
                             <span class="sunset-info">
                                 <p>{{ getTime(currentConditions.sunset) }}</p>
                                 <p>in 17 hours and 15 minutes</p>
@@ -114,46 +118,52 @@
                         </div>
                     </div>
                 </div>
-                <Card
-                    v-for="card in 5"
-                    v-bind:weatherResponse="weatherResponse"
-                />
+                <Card v-for="card in 5" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import HourlyConditions from "../components/HourlyConditions.vue";
+import DailyConditions from "../components/DailyConditions.vue";
 import Card from "../components/Card.vue";
 import weatherAPI from "../axios";
 export default {
     name: "Dashboard",
     components: {
+        HourlyConditions,
+        DailyConditions,
         Card,
     },
     data() {
         return {
-            currentDay: null,
             currentTime: null,
-            weatherResponse: Object,
             currentConditions: Object,
             hourlyConditions: Object,
-            dailyConditions: Object,
+            isToday: true,
+            isWeekly: false,
         };
     },
     methods: {
-        async getWeather() {
+        async getCurrentWeather() {
             try {
                 let weatherResponse = await weatherAPI.get(
-                    `/data/2.5/onecall?lat=48.1374&lon=11.5755&exclude=minutely&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
+                    `/data/2.5/onecall?lat=48.1374&lon=11.5755&exclude=minutely,daily&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
                 );
-                this.weatherResponse = weatherResponse;
                 this.currentConditions = weatherResponse.data.current;
-                this.hourlyConditions = weatherResponse.data.hourly.slice(0, 7);
-                this.dailyConditions = weatherResponse.data.daily;
+                this.hourlyConditions = weatherResponse.data.hourly[0];
             } catch (error) {
                 console.log(error);
             }
+        },
+        switchTodayView() {
+            this.isToday = true;
+            this.isWeekly = !this.isWeekly;
+        },
+        switchWeeklyView() {
+            this.isWeekly = true;
+            this.isToday = false;
         },
         roundNumber(number) {
             let roundedNumber = Math.round(number);
@@ -169,33 +179,30 @@ export default {
             return time;
         },
         getCurrentDay() {
-            this.currentDay = new Date().toLocaleDateString("en-US", {
+            let currentDay = new Date().toLocaleDateString("en-US", {
                 weekday: "long",
             });
+            return currentDay;
         },
         getCurrentTime() {
             let hour = new Date().getHours();
             let minutes = new Date().getMinutes();
-            let seconds = new Date().getSeconds();
             if (hour < 10) {
                 hour = "0" + hour;
             } else if (minutes < 10) {
                 minutes = "0" + minutes;
-            } else if (seconds < 10) {
-                seconds = "0" + seconds;
             }
-            this.currentTime = hour + ":" + minutes + ":" + seconds;
+            this.currentTime = hour + ":" + minutes;
         },
     },
     created() {
-        this.getWeather();
-        this.getCurrentDay();
+        this.getCurrentWeather();
         this.getCurrentTime();
     },
     mounted() {
         setInterval(() => {
             this.getCurrentTime();
-        }, 1000);
+        }, 50000);
     },
 };
 </script>
@@ -208,15 +215,16 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    flex-basis: 20%;
-    max-width: 500px;
+    max-width: 350px;
     padding: 30px;
     background-color: #fdfdfd;
 }
 .search-bar {
     display: flex;
-    font-size: 14px;
     border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #23120b;
     background-color: #f5f5f5;
 }
 .search-icon {
@@ -226,14 +234,20 @@ export default {
     outline: none;
     border: none;
     font-size: 14px;
+    font-weight: 400;
     flex-basis: 100%;
     background-color: #f5f5f5;
 }
 .submit-button {
     border-radius: 0px 20px 20px 0px;
     padding: 15px;
-    background-color: #21209c;
+    transition: 0.5s;
+    background-color: #fdb827;
+}
+.submit-button:hover {
+    transition: 0.5s;
     color: #fdfdfd;
+    background-color: #23120b;
 }
 .main-weather-condition {
     display: flex;
@@ -241,46 +255,41 @@ export default {
     align-items: center;
 }
 .main-weather-condition img {
-    width: 200px;
-    height: 200px;
-    filter: drop-shadow(1px 1px 1px rgb(228, 228, 228));
+    width: 300px;
+    height: 300px;
 }
 .main-card-header {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    min-width: 100%;
 }
 .main-card-header h1 {
-    font-size: 58px;
+    font-size: 42px;
     font-weight: 700;
-    margin-top: 10px;
-    margin-bottom: 0px;
-    color: #23120b;
-}
-.main-card-header h2 {
-    font-size: 20px;
-    font-weight: 600;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    color: #21209c;
-}
-.rounded-divider {
-    width: 100%;
-    border-top: 1px solid #e1e1e1;
-    border-radius: 5px;
     margin: 0px;
+    color: #23120b;
 }
 p {
     margin: 0px;
 }
 .additional-info {
-    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
     font-weight: 600;
+    border-top: 1px solid #eeeeee;
+    padding-top: 15px;
     color: #23120b;
 }
 .additional-info-time {
     font-weight: 400;
     color: #999999;
+}
+.additional-info-pop {
+    font-size: 18x;
+    font-weight: 600;
+    color: #21209c;
 }
 .current-condition {
     text-transform: capitalize;
@@ -293,10 +302,10 @@ p {
 }
 .city {
     position: relative;
-    opacity: 0.7;
+    opacity: 0.8;
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 .city-name {
     position: absolute;
@@ -304,8 +313,7 @@ p {
     top: 50%;
     left: 50%;
     margin: 0px;
-    margin-top: -1px;
-    font-weight: 600;
+    font-weight: 700;
     color: #fdfdfd;
 }
 .city-controls {
@@ -330,7 +338,7 @@ p {
     margin-right: 15px;
     opacity: 0.5;
     transition: opacity 0.5s;
-    color: #4a4a4a;
+    color: #23120b;
     background-color: #fdfdfd;
 }
 .fas.fa-chevron-left:hover,
@@ -341,7 +349,7 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    flex-basis: 80%;
+    flex-basis: 100%;
     padding: 30px;
 }
 .navbar {
@@ -350,16 +358,16 @@ p {
     align-items: center;
 }
 .today,
-.celsius {
-    margin-right: 20px;
-}
-.today {
-    font-size: 20px;
-    font-weight: 700;
-    text-underline-offset: 10px;
-    color: #23120b;
-}
 .weekly {
+    cursor: pointer;
+}
+.today,
+.celsius {
+    margin-right: 15px;
+}
+.today,
+.weekly {
+    padding-bottom: 5px;
     color: #999999;
 }
 .celsius,
@@ -370,14 +378,16 @@ p {
     width: 40px;
     height: 40px;
     line-height: 40px;
+    font-size: 18px;
+    font-weight: 600;
 }
 .celsius {
-    background-color: #23120b;
     color: #fdfdfd;
+    background-color: #23120b;
 }
 .fahrenheit {
-    background-color: #fdfdfd;
     color: #23120b;
+    background-color: #fdfdfd;
 }
 .small-cards {
     display: flex;
@@ -396,7 +406,6 @@ p {
     border-radius: 15px;
     padding: 15px;
     background-color: #fdfdfd;
-    backdrop-filter: blur(25px);
 }
 .small-card-header-1,
 .small-card-footer {
@@ -406,18 +415,20 @@ p {
 }
 .small-card-header-2 {
     font-size: 14px;
+    font-weight: 600;
+    margin-top: 5px;
     color: #21209c;
 }
 .small-card-body img {
     object-fit: cover;
-    width: 61px;
-    height: 61px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    min-width: 85px;
+    height: 85px;
 }
 .secondary-card-header h1 {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 700;
+    margin-top: 30px;
+    margin-bottom: 30px;
     color: #23120b;
 }
 .big-cards {
@@ -429,14 +440,18 @@ p {
 .big-card {
     border-radius: 15px;
     padding: 15px;
-    background-color: #fdfdfd;
     min-height: 200px;
+    background-color: #fdfdfd;
 }
 .big-card-header {
+    font-size: 14px;
+    font-weight: 400;
+    margin: 5px;
     color: #999999;
 }
 .big-card-body {
     font-size: 18px;
+    font-weight: 600;
     margin-top: 30px;
     color: #4a4a4a;
 }
@@ -450,9 +465,9 @@ p {
     object-fit: cover;
     width: 78px;
     height: 78px;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 .sunset {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 </style>
