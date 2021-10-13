@@ -368,6 +368,7 @@ p {
 .today,
 .weekly {
     padding-bottom: 5px;
+    transition: 0.5s;
     color: #999999;
 }
 .celsius,
@@ -451,7 +452,7 @@ p {
 }
 .big-card-body {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 400;
     margin-top: 30px;
     color: #4a4a4a;
 }
