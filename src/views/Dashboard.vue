@@ -82,12 +82,31 @@
                     <span class="fahrenheit">°F</span>
                 </div>
             </div>
-            <div class="small-cards" v-if="isToday">
-                <SmallCardHourly v-bind:hourlyConditions="hourlyConditions" />
-            </div>
-            <div class="small-cards" v-if="isWeekly">
-                <SmallCardDaily v-bind:dailyConditions="dailyConditions" />
-            </div>
+            <transition name="fade">
+                <div class="small-cards" v-if="isToday">
+                    <SmallCardHourly
+                        v-for="(hour, index) in hourlyConditions"
+                        v-bind:key="hour.id"
+                        v-bind:hour="hour"
+                        v-bind:index="index"
+                        v-bind:hourlyConditions="hourlyConditions"
+                        v-bind:roundNumber="roundNumber"
+                        v-bind:getTime="getTime"
+                    />
+                </div>
+            </transition>
+            <transition name="fade">
+                <div class="small-cards" v-if="isWeekly">
+                    <SmallCardDaily
+                        v-for="(day, index) in dailyConditions"
+                        v-bind:key="day.id"
+                        v-bind:day="day"
+                        v-bind:index="index"
+                        v-bind:dailyConditions="dailyConditions"
+                        v-bind:roundNumber="roundNumber"
+                    />
+                </div>
+            </transition>
             <div class="secondary-card-header" v-if="isToday">
                 <h1>Conditions for Today</h1>
             </div>
@@ -148,8 +167,8 @@ export default {
             currentTime: null,
             currentConditions: Object,
             currentConditionsPop: Object,
-            hourlyConditions: Object,
-            dailyConditions: Object,
+            hourlyConditions: null,
+            dailyConditions: null,
             isToday: true,
             isWeekly: false,
         };
@@ -170,7 +189,7 @@ export default {
         },
         switchTodayView() {
             this.isToday = true;
-            this.isWeekly = !this.isWeekly;
+            this.isWeekly = false;
         },
         switchWeeklyView() {
             this.isWeekly = true;
@@ -219,6 +238,13 @@ export default {
 </script>
 
 <style>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+}
 .container {
     display: flex;
 }

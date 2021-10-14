@@ -1,5 +1,5 @@
 <template>
-    <div class="small-card" v-for="(hour, index) in hourlyConditions">
+    <div class="small-card">
         <div class="small-card-header-1" v-if="index === 0">
             Now
         </div>
@@ -22,17 +22,14 @@
 export default {
     name: "SmallCardHourly",
     props: {
+        hour: Object,
+        index: null,
         hourlyConditions: Object,
-    },
-    methods: {
-        roundNumber(number) {
-            return this.$parent.roundNumber(number);
-        },
-        getTime(dtValue) {
-            return this.$parent.getTime(dtValue);
-        },
+        roundNumber: { type: Function },
+        getTime: { type: Function },
     },
 };
 </script>
 
-<style></style>
+<style>
+</style>

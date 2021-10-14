@@ -1,5 +1,5 @@
 <template>
-    <div class="small-card" v-for="(day, index) in dailyConditions">
+    <div class="small-card">
         <div class="small-card-header-1" v-if="index === 0">
             Today
         </div>
@@ -23,12 +23,12 @@
 export default {
     name: "SmallCardDaily",
     props: {
+        day: Object,
+        index: null,
         dailyConditions: Object,
+        roundNumber: { type: Function },
     },
     methods: {
-        roundNumber(number) {
-            return this.$parent.roundNumber(number);
-        },
         getDay(dtValue) {
             let dayName = new Date(dtValue * 1000).toLocaleDateString("en-US", {
                 weekday: "long",
