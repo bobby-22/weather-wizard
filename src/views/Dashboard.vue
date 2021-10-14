@@ -26,7 +26,7 @@
                 </span>
                 <span class="additional-info-pop">
                     <i class="fas fa-tint"></i>
-                    {{ roundNumber(hourlyConditions.pop * 100) }}%
+                    {{ roundNumber(currentConditionsPop.pop * 100) }}%
                 </span>
             </div>
             <div class="media">
@@ -83,10 +83,10 @@
                 </div>
             </div>
             <div class="small-cards" v-if="isToday">
-                <SmallCardHourly />
+                <SmallCardHourly v-bind:hourlyConditions="hourlyConditions" />
             </div>
             <div class="small-cards" v-if="isWeekly">
-                <SmallCardDaily />
+                <SmallCardDaily v-bind:dailyConditions="dailyConditions" />
             </div>
             <div class="secondary-card-header" v-if="isToday">
                 <h1>Conditions for Today</h1>
@@ -118,10 +118,12 @@
                         </div>
                     </div>
                 </div>
-                <BigCardHourly
-                    v-for="card in 5"
-                    v-bind:weatherResponse="weatherResponse"
-                />
+                <div class="big-card" v-for="card in 5" v-if="isToday">
+                    Hourly
+                </div>
+                <div class="big-card" v-for="card in 5" v-if="isWeekly">
+                    Weekly
+                </div>
             </div>
         </div>
     </div>
@@ -145,7 +147,9 @@ export default {
         return {
             currentTime: null,
             currentConditions: Object,
+            currentConditionsPop: Object,
             hourlyConditions: Object,
+            dailyConditions: Object,
             isToday: true,
             isWeekly: false,
         };
@@ -154,10 +158,12 @@ export default {
         async getCurrentWeather() {
             try {
                 let weatherResponse = await weatherAPI.get(
-                    `/data/2.5/onecall?lat=48.1374&lon=11.5755&exclude=minutely,daily&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
+                    `/data/2.5/onecall?lat=48.1374&lon=11.5755&exclude=minutely&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
                 );
                 this.currentConditions = weatherResponse.data.current;
-                this.hourlyConditions = weatherResponse.data.hourly[0];
+                this.currentConditionsPop = weatherResponse.data.hourly[0];
+                this.hourlyConditions = weatherResponse.data.hourly.slice(0, 7);
+                this.dailyConditions = weatherResponse.data.daily.slice(0, 7);
             } catch (error) {
                 console.log(error);
             }

@@ -28,9 +28,6 @@ export default {
     props: {
         weatherResponse: Object,
     },
-    mounted() {
-        console.log(this.weatherResponse);
-    },
 };
 </script>
 

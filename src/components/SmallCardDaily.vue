@@ -20,26 +20,12 @@
 </template>
 
 <script>
-import weatherAPI from "../axios";
 export default {
     name: "SmallCardDaily",
-    data() {
-        return {
-            dailyConditions: Object,
-        };
+    props: {
+        dailyConditions: Object,
     },
     methods: {
-        async getDailyWeather() {
-            try {
-                let dailyResponse = await weatherAPI.get(
-                    `/data/2.5/onecall?lat=48.1374&lon=11.5755&exclude=minutely,hourly,current&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
-                );
-                this.dailyConditions = dailyResponse.data.daily.slice(0, 7);
-                console.log(dailyConditions);
-            } catch (error) {
-                console.log(error);
-            }
-        },
         roundNumber(number) {
             return this.$parent.roundNumber(number);
         },
@@ -49,9 +35,6 @@ export default {
             });
             return dayName.slice(0, 3);
         },
-    },
-    created() {
-        this.getDailyWeather();
     },
 };
 </script>

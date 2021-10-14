@@ -19,34 +19,18 @@
 </template>
 
 <script>
-import weatherAPI from "../axios";
 export default {
     name: "SmallCardHourly",
-    data() {
-        return {
-            hourlyConditions: Object,
-        };
+    props: {
+        hourlyConditions: Object,
     },
     methods: {
-        async getHourlyWeather() {
-            try {
-                let hourlyResponse = await weatherAPI.get(
-                    `/data/2.5/onecall?lat=48.1374&lon=11.5755&exclude=minutely,daily,current&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
-                );
-                this.hourlyConditions = hourlyResponse.data.hourly.slice(0, 7);
-            } catch (error) {
-                console.log(error);
-            }
-        },
         roundNumber(number) {
             return this.$parent.roundNumber(number);
         },
         getTime(dtValue) {
             return this.$parent.getTime(dtValue);
         },
-    },
-    created() {
-        this.getHourlyWeather();
     },
 };
 </script>
