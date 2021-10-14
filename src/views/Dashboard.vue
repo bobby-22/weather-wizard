@@ -83,10 +83,10 @@
                 </div>
             </div>
             <div class="small-cards" v-if="isToday">
-                <HourlyConditions />
+                <SmallCardHourly />
             </div>
             <div class="small-cards" v-if="isWeekly">
-                <DailyConditions />
+                <SmallCardDaily />
             </div>
             <div class="secondary-card-header" v-if="isToday">
                 <h1>Conditions for Today</h1>
@@ -118,23 +118,28 @@
                         </div>
                     </div>
                 </div>
-                <Card v-for="card in 5" />
+                <BigCardHourly
+                    v-for="card in 5"
+                    v-bind:weatherResponse="weatherResponse"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import HourlyConditions from "../components/HourlyConditions.vue";
-import DailyConditions from "../components/DailyConditions.vue";
-import Card from "../components/Card.vue";
+import SmallCardHourly from "../components/SmallCardHourly.vue";
+import SmallCardDaily from "../components/SmallCardDaily.vue";
+import BigCardHourly from "../components/BigCardHourly.vue";
+import BigCardDaily from "../components/BigCardDaily.vue";
 import weatherAPI from "../axios";
 export default {
     name: "Dashboard",
     components: {
-        HourlyConditions,
-        DailyConditions,
-        Card,
+        SmallCardHourly,
+        SmallCardDaily,
+        BigCardHourly,
+        BigCardDaily,
     },
     data() {
         return {

@@ -1,20 +1,20 @@
 <template>
-    <div class="small-card" v-for="(condition, index) in dailyConditions">
+    <div class="small-card" v-for="(day, index) in dailyConditions">
         <div class="small-card-header-1" v-if="index === 0">
             Today
         </div>
         <div class="small-card-header-1" v-else>
-            {{ getDay(condition.dt) }}
+            {{ getDay(day.dt) }}
         </div>
-        <div class="small-card-header-2" v-if="condition.pop != 0">
-            {{ roundNumber(condition.pop * 100) }}%
+        <div class="small-card-header-2" v-if="day.pop != 0">
+            {{ roundNumber(day.pop * 100) }}%
         </div>
         <div class="small-card-body">
             <img src="../assets/cloud_rain.png" />
         </div>
         <div class="small-card-footer">
-            {{ roundNumber(condition.temp.day - 273.15) }}° /
-            {{ roundNumber(condition.temp.night - 273.15) }}°
+            {{ roundNumber(day.temp.day - 273.15) }}° /
+            {{ roundNumber(day.temp.night - 273.15) }}°
         </div>
     </div>
 </template>
@@ -22,7 +22,7 @@
 <script>
 import weatherAPI from "../axios";
 export default {
-    name: "dailyConditions",
+    name: "SmallCardDaily",
     data() {
         return {
             dailyConditions: Object,

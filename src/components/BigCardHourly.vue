@@ -24,9 +24,12 @@
 
 <script>
 export default {
-    name: "Card",
+    name: "BigCardHourly",
     props: {
         weatherResponse: Object,
+    },
+    mounted() {
+        console.log(this.weatherResponse);
     },
 };
 </script>

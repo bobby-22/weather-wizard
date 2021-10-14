@@ -1,19 +1,19 @@
 <template>
-    <div class="small-card" v-for="(condition, index) in hourlyConditions">
+    <div class="small-card" v-for="(hour, index) in hourlyConditions">
         <div class="small-card-header-1" v-if="index === 0">
             Now
         </div>
         <div class="small-card-header-1" v-else>
-            {{ getTime(condition.dt) }}
+            {{ getTime(hour.dt) }}
         </div>
-        <div class="small-card-header-2" v-if="condition.pop != 0">
-            {{ roundNumber(condition.pop * 100) }}%
+        <div class="small-card-header-2" v-if="hour.pop != 0">
+            {{ roundNumber(hour.pop * 100) }}%
         </div>
         <div class="small-card-body">
             <img src="../assets/cloud_rain.png" />
         </div>
         <div class="small-card-footer">
-            {{ roundNumber(condition.temp - 273.15) }}°
+            {{ roundNumber(hour.temp - 273.15) }}°
         </div>
     </div>
 </template>
@@ -21,7 +21,7 @@
 <script>
 import weatherAPI from "../axios";
 export default {
-    name: "HourlyConditions",
+    name: "SmallCardHourly",
     data() {
         return {
             hourlyConditions: Object,
