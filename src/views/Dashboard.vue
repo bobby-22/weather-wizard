@@ -82,31 +82,27 @@
                     <span class="fahrenheit">°F</span>
                 </div>
             </div>
-            <transition name="fade">
-                <div class="small-cards" v-if="isToday">
-                    <SmallCardHourly
-                        v-for="(hour, index) in hourlyConditions"
-                        v-bind:key="hour.id"
-                        v-bind:hour="hour"
-                        v-bind:index="index"
-                        v-bind:hourlyConditions="hourlyConditions"
-                        v-bind:roundNumber="roundNumber"
-                        v-bind:getTime="getTime"
-                    />
-                </div>
-            </transition>
-            <transition name="fade">
-                <div class="small-cards" v-if="isWeekly">
-                    <SmallCardDaily
-                        v-for="(day, index) in dailyConditions"
-                        v-bind:key="day.id"
-                        v-bind:day="day"
-                        v-bind:index="index"
-                        v-bind:dailyConditions="dailyConditions"
-                        v-bind:roundNumber="roundNumber"
-                    />
-                </div>
-            </transition>
+            <div class="small-cards" v-if="isToday">
+                <SmallCardHourly
+                    v-for="(hour, index) in hourlyConditions"
+                    v-bind:key="hour.id"
+                    v-bind:hour="hour"
+                    v-bind:index="index"
+                    v-bind:hourlyConditions="hourlyConditions"
+                    v-bind:roundNumber="roundNumber"
+                    v-bind:getTime="getTime"
+                />
+            </div>
+            <div class="small-cards" v-else-if="isWeekly">
+                <SmallCardDaily
+                    v-for="(day, index) in dailyConditions"
+                    v-bind:key="day.id"
+                    v-bind:day="day"
+                    v-bind:index="index"
+                    v-bind:dailyConditions="dailyConditions"
+                    v-bind:roundNumber="roundNumber"
+                />
+            </div>
             <div class="secondary-card-header" v-if="isToday">
                 <h1>Conditions for Today</h1>
             </div>
@@ -240,7 +236,6 @@ export default {
 <style>
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
@@ -427,11 +422,30 @@ p {
     color: #23120b;
     background-color: #fdfdfd;
 }
+@keyframes fade-out {
+    0% {
+        opacity: 0.2;
+    }
+    25% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 0.6;
+    }
+    75% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 .small-cards {
     display: flex;
     justify-content: space-between;
     column-gap: 10px;
     margin-top: 30px;
+    animation-name: fade-out;
+    animation-duration: 1s;
 }
 .small-card {
     display: flex;
@@ -439,7 +453,7 @@ p {
     justify-content: space-between;
     align-items: center;
     flex-basis: 100%;
-    min-height: 100px;
+    height: 150px;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
     border-radius: 15px;
     padding: 15px;
@@ -480,6 +494,8 @@ p {
     padding: 15px;
     min-height: 200px;
     background-color: #fdfdfd;
+    animation-name: fade-out;
+    animation-duration: 1s;
 }
 .big-card-header {
     font-size: 14px;
