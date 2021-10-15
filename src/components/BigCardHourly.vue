@@ -4,21 +4,24 @@
             Sunrise & Sunset
         </div>
         <div class="big-card-body">
-            <div class="sunrise">
-                <img src="../assets/cloud_fog.png" />
-                <span class="sunrise-info">
-                    <p>18:30</p>
+            <div class="big-card-body-top">
+                <img src="../assets/sunrise.png" />
+                <span class="top-info">
+                    <p>{{ getTime(hourlyConditions.sunrise) }}</p>
                     <p>in 7 hours and 45 minutes</p>
                 </span>
             </div>
-            <div class="sunset">
-                <img src="../assets/cloud_storm.png" />
-                <span class="sunset-info">
-                    <p>6:00</p>
+            <div class="big-card-body-bottom">
+                <img src="../assets/sunrise.png" />
+                <span class="bottom-info">
+                    <p>{{ getTime(hourlyConditions.sunset) }}</p>
                     <p>in 17 hours and 15 minutes</p>
                 </span>
             </div>
         </div>
+    </div>
+    <div class="big-card" v-for="card in 5">
+        Card
     </div>
 </template>
 
@@ -26,7 +29,11 @@
 export default {
     name: "BigCardHourly",
     props: {
-        weatherResponse: Object,
+        hour: Object,
+        index: null,
+        hourlyConditions: Object,
+        roundNumber: { type: Function },
+        getTime: { type: Function },
     },
 };
 </script>

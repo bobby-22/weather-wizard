@@ -24,12 +24,10 @@ export default {
     props: {
         hour: Object,
         index: null,
-        hourlyConditions: Object,
         roundNumber: { type: Function },
         getTime: { type: Function },
     },
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -25,7 +25,6 @@ export default {
     props: {
         day: Object,
         index: null,
-        dailyConditions: Object,
         roundNumber: { type: Function },
     },
     methods: {
