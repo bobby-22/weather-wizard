@@ -74,38 +74,12 @@ export default {
     },
     methods: {
         getWindSpeedRange() {
-            switch (true) {
-                case this.windSpeed <= 10:
-                    this.barScale = "10%";
-                    break;
-                case this.windSpeed <= 20:
-                    this.barScale = "20%";
-                    break;
-                case this.windSpeed <= 30:
-                    this.barScale = "30%";
-                    break;
-                case this.windSpeed <= 40:
-                    this.barScale = "40%";
-                    break;
-                case this.windSpeed <= 50:
-                    this.barScale = "50%";
-                    break;
-                case this.windSpeed <= 60:
-                    this.barScale = "60%";
-                    break;
-                case this.windSpeed <= 70:
-                    this.barScale = "70%";
-                    break;
-                case this.windSpeed <= 80:
-                    this.barScale = "80%";
-                    break;
-                case this.windSpeed <= 90:
-                    this.barScale = "90%";
-                    break;
-                case this.windSpeed > 90:
-                    this.barScale = "95%";
-                    break;
+            if (this.windSpeed > 90) {
+                this.barScale = "95%";
+                return;
             }
+            let string = this.windSpeed + "%";
+            this.barScale = string;
         },
     },
     created() {
