@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <div class="big-card" style="position:relative">
+    <div class="big-card">
         <div class="big-card-header">
             Wind Speed
         </div>
@@ -46,11 +46,40 @@
                 }}</span>
             </span>
         </div>
-        <div class="bar" style="">
-            <div class="circle" v-bind:style="{ bottom: barScale }"></div>
+        <div class="monotone-bar">
+            <div
+                class="monotone-circle"
+                v-bind:style="{ bottom: windScale }"
+            ></div>
         </div>
     </div>
-    <div class="big-card" v-for="card in 4">
+    <div class="big-card">
+        <div class="big-card-header">
+            UV Index
+        </div>
+        <div class="big-card-body-top">
+            <span class="top-info">
+                <span class="wind-speed">
+                    {{ dailyConditions[currentDayIndex].uvi }}
+                </span>
+            </span>
+        </div>
+        <div class="big-card-body-bottom">
+            <span class="bottom-info">
+                <div class="wind-direction-icon">
+                    <i class="far fa-thumbs-up"></i>
+                </div>
+                <span>Low</span>
+            </span>
+        </div>
+        <div class="rainbow-bar">
+            <div
+                class="rainbow-circle"
+                v-bind:style="{ bottom: uvScale }"
+            ></div>
+        </div>
+    </div>
+    <div class="big-card" v-for="card in 3">
         Card
     </div>
 </template>
@@ -68,22 +97,33 @@ export default {
     },
     data() {
         return {
-            barScale: "",
+            windScale: "",
+            uvScale: "",
             windSpeed: this.dailyConditions[this.currentDayIndex].wind_speed,
+            uvIndex: this.dailyConditions[this.currentDayIndex].uvi * 10,
         };
     },
     methods: {
-        getWindSpeedRange() {
-            if (this.windSpeed > 90) {
-                this.barScale = "95%";
-                return;
+        getScale() {
+            this.windScale = this.windSpeed + "%";
+            this.uvScale = this.uvIndex + "%";
+
+            if (this.windSpeed >= 100) {
+                this.windScale = "92%";
             }
-            let string = this.windSpeed + "%";
-            this.barScale = string;
+            if (this.windSpeed <= 5) {
+                this.windScale = "8%";
+            }
+            if (this.uvIndex >= 100) {
+                this.uvScale = "92%";
+            }
+            if (this.uvIndex < 1) {
+                this.uvScale = "8%";
+            }
         },
     },
     created() {
-        this.getWindSpeedRange();
+        this.getScale();
     },
 };
 </script>
@@ -112,7 +152,8 @@ export default {
     color: #fdb827;
     background-color: #23120b;
 }
-.bar {
+.monotone-bar,
+.rainbow-bar {
     display: grid;
     justify-items: center;
     position: absolute;
@@ -120,19 +161,33 @@ export default {
     right: 5px;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 20px;
+    width: 25px;
     height: 200px;
     background-color: #f1f1f1;
 }
-.circle {
+.monotone-circle,
+.rainbow-circle {
     position: absolute;
     display: inline-block;
     border-radius: 50%;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     transform: translateY(50%);
-    line-height: 10px;
+    line-height: 12px;
     border: 2px solid #23120b;
     background-color: #fdb827;
+}
+.rainbow-bar {
+    background: linear-gradient(
+        180deg,
+        rgba(255, 0, 0, 1) 0%,
+        rgba(255, 149, 0, 1) 25%,
+        rgba(255, 224, 0, 1) 50%,
+        rgba(234, 255, 0, 1) 75%,
+        rgba(170, 255, 0, 1) 100%
+    );
+}
+.rainbow-circle {
+    background-color: #fdfdfd;
 }
 </style>

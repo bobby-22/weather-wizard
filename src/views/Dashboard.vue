@@ -487,6 +487,7 @@ p {
     gap: 15px;
 }
 .big-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
