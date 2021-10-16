@@ -21,7 +21,7 @@
                 <span>
                     {{ getCurrentDay() }},
                     <span class="additional-info-time">
-                        {{ currentTime }}
+                        {{ getCurrentTime() }}
                     </span>
                 </span>
                 <span class="additional-info-pop">
@@ -55,7 +55,7 @@
                                       color: '#23120b',
                                       'font-size': '18px',
                                       'font-weight': '700',
-                                      transition: '0.5s',
+                                      transition: '0.4s',
                                   },
                         ]"
                         >Today</span
@@ -71,7 +71,7 @@
                                       color: '#23120b',
                                       'font-size': '18px',
                                       'font-weight': '700',
-                                      transition: '0.5s',
+                                      transition: '0.4s',
                                   },
                         ]"
                         >Weekly</span
@@ -85,7 +85,6 @@
             <div class="small-cards" v-if="isToday">
                 <SmallCardHourly
                     v-for="(hour, index) in hourlyConditions"
-                    v-on:click="currentDayIndex = index"
                     v-bind:key="hour.id"
                     v-bind:hour="hour"
                     v-bind:index="index"
@@ -96,6 +95,7 @@
             <div class="small-cards" v-else-if="isWeekly">
                 <SmallCardDaily
                     v-for="(day, index) in dailyConditions"
+                    v-on:click="currentDayIndex = index"
                     v-bind:key="day.id"
                     v-bind:day="day"
                     v-bind:index="index"
@@ -106,9 +106,44 @@
                 <h1>Conditions for Today</h1>
             </div>
             <div class="secondary-card-header" v-if="isWeekly">
-                <h1>Conditions for {{ getCurrentDay() }}</h1>
+                <h1>Conditions for {{ getDayName() }}</h1>
             </div>
             <div class="big-cards">
+                <div class="big-card">
+                    <div class="big-card-header">
+                        Sunrise & Sunset
+                    </div>
+                    <div class="big-card-body">
+                        <div class="big-card-body-top">
+                            <img src="../assets/sunrise.png" />
+                            <span class="top-info">
+                                <p class="sunrise-time">
+                                    {{
+                                        getTime(
+                                            dailyConditions[currentDayIndex]
+                                                .sunrise
+                                        )
+                                    }}
+                                </p>
+                                <p>in 7 hours and 45 minutes</p>
+                            </span>
+                        </div>
+                        <div class="big-card-body-bottom">
+                            <img src="../assets/sunset.png" />
+                            <span class="bottom-info">
+                                <p class="sunset-time">
+                                    {{
+                                        getTime(
+                                            dailyConditions[currentDayIndex]
+                                                .sunset
+                                        )
+                                    }}
+                                </p>
+                                <p>in 17 hours and 15 minutes</p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <BigCardHourly
                     v-if="isToday"
                     v-bind:hourlyConditions="hourlyConditions"
@@ -117,8 +152,7 @@
                 />
                 <BigCardDaily
                     v-if="isWeekly"
-                    v-bind:dailyConditions="dailyConditions"
-                    v-bind:currentDayIndex="currentDayIndex"
+                    v-bind:dailyConditions="dailyConditions[currentDayIndex]"
                     v-bind:roundNumber="roundNumber"
                     v-bind:getTime="getTime"
                     v-bind:getWindDirection="getWindDirection"
@@ -144,7 +178,6 @@ export default {
     },
     data() {
         return {
-            currentTime: null,
             currentConditions: Object,
             currentConditionsPop: Object,
             hourlyConditions: null,
@@ -195,6 +228,29 @@ export default {
             });
             return currentDay;
         },
+        getDayName() {
+            let days = [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday",
+            ];
+            let currentDayIndex =
+                new Date(
+                    this.dailyConditions[this.currentDayIndex].dt * 1000
+                ).getDay() - 1;
+            let currentDay = days[currentDayIndex];
+            if (currentDayIndex === -1) {
+                return "Sunday";
+            } else if (this.currentDayIndex === 0) {
+                return "Today";
+            } else {
+                return currentDay;
+            }
+        },
         getCurrentTime() {
             let hour = new Date().getHours();
             let minutes = new Date().getMinutes();
@@ -203,7 +259,8 @@ export default {
             } else if (minutes < 10) {
                 minutes = "0" + minutes;
             }
-            this.currentTime = hour + ":" + minutes;
+            let currentTime = hour + ":" + minutes;
+            return currentTime;
         },
         getWindDirection(degree) {
             /*
@@ -232,6 +289,13 @@ export default {
         setInterval(() => {
             this.getCurrentTime();
         }, 30000);
+    },
+    watch: {
+        currentDayIndex: {
+            handler: function() {
+                this.getDayName();
+            },
+        },
     },
 };
 </script>
@@ -270,11 +334,11 @@ export default {
 .submit-button {
     border-radius: 0px 20px 20px 0px;
     padding: 15px;
-    transition: 0.5s;
+    transition: 0.4s;
     background-color: #fdb827;
 }
 .submit-button:hover {
-    transition: 0.5s;
+    transition: 0.4s;
     color: #fdfdfd;
     background-color: #23120b;
 }
@@ -366,7 +430,7 @@ p {
     margin-left: 15px;
     margin-right: 15px;
     opacity: 0.5;
-    transition: opacity 0.5s;
+    transition: opacity 0.4s;
     color: #23120b;
     background-color: #fdfdfd;
 }
@@ -397,7 +461,7 @@ p {
 .today,
 .weekly {
     padding-bottom: 5px;
-    transition: 0.5s;
+    transition: 0.4s;
     color: #999999;
 }
 .celsius,
@@ -451,9 +515,9 @@ p {
     align-items: center;
     flex-basis: 100%;
     height: 150px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
     border-radius: 15px;
     padding: 15px;
+    transition: 0.2s;
     background-color: #fdfdfd;
 }
 .small-card-header-1,
@@ -517,5 +581,28 @@ p {
 }
 .big-card-body-bottom {
     margin-top: 5px;
+}
+.sunset-time,
+.sunrise-time {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #23120b;
+}
+.wind-speed {
+    font-size: 30px;
+    font-weight: 600;
+    color: #23120b;
+}
+.wind-direction-icon {
+    display: inline-block;
+    text-align: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 15px;
+    color: #fdb827;
+    background-color: #23120b;
 }
 </style>

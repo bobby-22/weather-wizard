@@ -13,9 +13,9 @@
         <div
             class="circle"
             v-bind:style="[
-                { bottom: percentScale },
+                { bottom: getPercentScale() },
                 !isColored
-                    ? { 'background-color': 'none' }
+                    ? { 'background-color': '#fdb827' }
                     : { 'background-color': '#fdfdfd' },
             ]"
         ></div>
@@ -24,29 +24,32 @@
 
 <script>
 export default {
-    name: "BigCardDaily",
+    name: "ScaleBar",
     props: {
         data: null,
         isColored: false,
     },
-    data() {
-        return {
-            percentScale: "",
-        };
-    },
     methods: {
         getPercentScale() {
-            this.percentScale = this.data + "%";
             if (this.data >= 100) {
-                this.percentScale = "92%";
+                return "92%";
             }
-            if (this.data <= 5) {
-                this.percentScale = "8%";
+            if (this.data <= 8) {
+                return "8%";
+            } else {
+                return this.data + "%";
             }
         },
     },
     created() {
         this.getPercentScale();
+    },
+    watch: {
+        data: {
+            handler: function() {
+                this.getPercentScale();
+            },
+        },
     },
 };
 </script>

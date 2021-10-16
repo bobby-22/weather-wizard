@@ -38,4 +38,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.small-card:hover {
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 20px;
+}
+</style>
