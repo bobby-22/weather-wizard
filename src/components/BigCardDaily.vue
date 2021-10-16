@@ -46,12 +46,10 @@
                 }}</span>
             </span>
         </div>
-        <div class="monotone-bar">
-            <div
-                class="monotone-circle"
-                v-bind:style="{ bottom: windScale }"
-            ></div>
-        </div>
+        <Bar
+            v-bind:data="dailyConditions[currentDayIndex].wind_speed"
+            v-bind:isColored="false"
+        />
     </div>
     <div class="big-card">
         <div class="big-card-header">
@@ -72,12 +70,10 @@
                 <span>Low</span>
             </span>
         </div>
-        <div class="rainbow-bar">
-            <div
-                class="rainbow-circle"
-                v-bind:style="{ bottom: uvScale }"
-            ></div>
-        </div>
+        <Bar
+            v-bind:data="dailyConditions[currentDayIndex].uvi * 10"
+            v-bind:isColored="true"
+        />
     </div>
     <div class="big-card" v-for="card in 3">
         Card
@@ -85,8 +81,12 @@
 </template>
 
 <script>
+import Bar from "./Bar.vue";
 export default {
     name: "BigCardDaily",
+    components: {
+        Bar,
+    },
     props: {
         day: Object,
         currentDayIndex: null,
@@ -94,36 +94,6 @@ export default {
         roundNumber: { type: Function },
         getTime: { type: Function },
         getWindDirection: { type: Function },
-    },
-    data() {
-        return {
-            windScale: "",
-            uvScale: "",
-            windSpeed: this.dailyConditions[this.currentDayIndex].wind_speed,
-            uvIndex: this.dailyConditions[this.currentDayIndex].uvi * 10,
-        };
-    },
-    methods: {
-        getScale() {
-            this.windScale = this.windSpeed + "%";
-            this.uvScale = this.uvIndex + "%";
-
-            if (this.windSpeed >= 100) {
-                this.windScale = "92%";
-            }
-            if (this.windSpeed <= 5) {
-                this.windScale = "8%";
-            }
-            if (this.uvIndex >= 100) {
-                this.uvScale = "92%";
-            }
-            if (this.uvIndex < 1) {
-                this.uvScale = "8%";
-            }
-        },
-    },
-    created() {
-        this.getScale();
     },
 };
 </script>
