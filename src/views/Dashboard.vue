@@ -114,8 +114,11 @@
                         Sunrise & Sunset
                     </div>
                     <div class="big-card-body">
-                        <div class="big-card-body-top">
-                            <img src="../assets/sunrise.png" />
+                        <div class="big-card-body-top" id="sunrise-time">
+                            <img
+                                class="resize-image"
+                                src="../assets/sunrise.png"
+                            />
                             <span class="top-info">
                                 <p class="sunrise-time">
                                     {{
@@ -129,7 +132,10 @@
                             </span>
                         </div>
                         <div class="big-card-body-bottom">
-                            <img src="../assets/sunset.png" />
+                            <img
+                                class="resize-image"
+                                src="../assets/sunset.png"
+                            />
                             <span class="bottom-info">
                                 <p class="sunset-time">
                                     {{
@@ -334,11 +340,11 @@ export default {
 .submit-button {
     border-radius: 0px 20px 20px 0px;
     padding: 15px;
-    transition: 0.4s;
+    transition: 0.5s;
     background-color: #fdb827;
 }
 .submit-button:hover {
-    transition: 0.4s;
+    transition: 0.5s;
     color: #fdfdfd;
     background-color: #23120b;
 }
@@ -430,7 +436,7 @@ p {
     margin-left: 15px;
     margin-right: 15px;
     opacity: 0.5;
-    transition: opacity 0.4s;
+    transition: opacity 0.5s;
     color: #23120b;
     background-color: #fdfdfd;
 }
@@ -506,7 +512,7 @@ p {
     column-gap: 10px;
     margin-top: 30px;
     animation-name: fade-out;
-    animation-duration: 0.5s;
+    animation-duration: 0.3s;
 }
 .small-card {
     display: flex;
@@ -517,7 +523,7 @@ p {
     height: 150px;
     border-radius: 15px;
     padding: 15px;
-    transition: 0.2s;
+    transition: 0.3s;
     background-color: #fdfdfd;
 }
 .small-card-header-1,
@@ -560,7 +566,7 @@ p {
     min-height: 200px;
     background-color: #fdfdfd;
     animation-name: fade-out;
-    animation-duration: 0.5s;
+    animation-duration: 0.2s;
 }
 .big-card-header {
     font-size: 14px;
@@ -582,27 +588,36 @@ p {
 .big-card-body-bottom {
     margin-top: 5px;
 }
-.sunset-time,
-.sunrise-time {
-    font-size: 22px;
-    font-weight: 600;
+.sunrise-time,
+.sunset-time {
     margin-bottom: 5px;
-    color: #23120b;
 }
-.wind-speed {
+#sunrise-time {
+    margin-bottom: 30px;
+}
+.sunrise-time,
+.sunset-time,
+.top-info-main {
     font-size: 30px;
     font-weight: 600;
     color: #23120b;
 }
-.wind-direction-icon {
+.top-info-secondary {
+    font-size: 22px;
+}
+.bottom-info-icon {
     display: inline-block;
     text-align: center;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
+    font-size: 20px;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
     margin-right: 15px;
     color: #fdb827;
     background-color: #23120b;
+}
+.resize-image {
+    margin-left: -13px;
 }
 </style>
