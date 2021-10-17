@@ -48,7 +48,7 @@
                         class="today"
                         @click="switchTodayView()"
                         v-bind:style="[
-                            isWeekly
+                            !isToday
                                 ? { 'border-bottom': 'none' }
                                 : {
                                       'border-bottom': '1px solid #23120b',
@@ -83,32 +83,50 @@
                 </div>
             </div>
             <div class="small-cards" v-if="isToday">
-                <SmallCardHourly
+                <SmallCards
                     v-for="(hour, index) in hourlyConditions"
                     v-bind:key="hour.id"
-                    v-bind:hour="hour"
+                    v-bind:data="hour"
                     v-bind:index="index"
+                    v-bind:header="'Now'"
                     v-bind:roundNumber="roundNumber"
                     v-bind:getTime="getTime"
                 />
             </div>
-            <div class="small-cards" v-else-if="isWeekly">
-                <SmallCardDaily
+            <div class="small-cards" v-else>
+                <SmallCards
                     v-for="(day, index) in dailyConditions"
                     v-on:click="currentDayIndex = index"
                     v-bind:key="day.id"
-                    v-bind:day="day"
+                    v-bind:data="day"
                     v-bind:index="index"
+                    v-bind:header="'Today'"
                     v-bind:roundNumber="roundNumber"
                 />
             </div>
             <div class="secondary-card-header" v-if="isToday">
-                <h1>Conditions for Today</h1>
+                <h1>Conditions for Now</h1>
             </div>
-            <div class="secondary-card-header" v-if="isWeekly">
+            <div class="secondary-card-header" v-else>
                 <h1>Conditions for {{ getDayName() }}</h1>
             </div>
             <div class="big-cards">
+                <BigCards
+                    v-if="isToday"
+                    v-bind:data="currentConditions"
+                    v-bind:isToday="false"
+                    v-bind:roundNumber="roundNumber"
+                    v-bind:getTime="getTime"
+                    v-bind:getWindDirection="getWindDirection"
+                />
+                <BigCards
+                    v-else
+                    v-bind:data="dailyConditions[currentDayIndex]"
+                    v-bind:isToday="true"
+                    v-bind:roundNumber="roundNumber"
+                    v-bind:getTime="getTime"
+                    v-bind:getWindDirection="getWindDirection"
+                />
                 <div class="big-card">
                     <div class="big-card-header">
                         Sunrise & Sunset
@@ -150,37 +168,20 @@
                         </div>
                     </div>
                 </div>
-                <BigCardHourly
-                    v-if="isToday"
-                    v-bind:hourlyConditions="hourlyConditions"
-                    v-bind:roundNumber="roundNumber"
-                    v-bind:getTime="getTime"
-                />
-                <BigCardDaily
-                    v-if="isWeekly"
-                    v-bind:dailyConditions="dailyConditions[currentDayIndex]"
-                    v-bind:roundNumber="roundNumber"
-                    v-bind:getTime="getTime"
-                    v-bind:getWindDirection="getWindDirection"
-                />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import SmallCardHourly from "../components/SmallCardHourly.vue";
-import SmallCardDaily from "../components/SmallCardDaily.vue";
-import BigCardHourly from "../components/BigCardHourly.vue";
-import BigCardDaily from "../components/BigCardDaily.vue";
+import SmallCards from "../components/SmallCards.vue";
+import BigCards from "../components/BigCards.vue";
 import weatherAPI from "../axios";
 export default {
     name: "Dashboard",
     components: {
-        SmallCardHourly,
-        SmallCardDaily,
-        BigCardHourly,
-        BigCardDaily,
+        SmallCards,
+        BigCards,
     },
     data() {
         return {
@@ -190,7 +191,6 @@ export default {
             dailyConditions: null,
             currentDayIndex: 0,
             isToday: true,
-            isWeekly: false,
         };
     },
     methods: {
@@ -209,10 +209,8 @@ export default {
         },
         switchTodayView() {
             this.isToday = true;
-            this.isWeekly = false;
         },
         switchWeeklyView() {
-            this.isWeekly = true;
             this.isToday = false;
         },
         roundNumber(number) {
@@ -249,10 +247,11 @@ export default {
                     this.dailyConditions[this.currentDayIndex].dt * 1000
                 ).getDay() - 1;
             let currentDay = days[currentDayIndex];
+            if (this.currentDayIndex === 0) {
+                return "Today";
+            }
             if (currentDayIndex === -1) {
                 return "Sunday";
-            } else if (this.currentDayIndex === 0) {
-                return "Today";
             } else {
                 return currentDay;
             }
@@ -283,12 +282,16 @@ export default {
                 "Westerly",
                 "North Westerly",
             ];
-            let direction = directions[Math.round(degree / 45, 0)];
-            return direction;
+            let directionIndex = Math.round(degree / 45, 0);
+            let direction = directions[directionIndex];
+            if (directionIndex === 8) {
+                return "Northerly";
+            } else return direction;
         },
     },
     created() {
         this.getCurrentWeather();
+        console.log(this.getWindDirection(1));
         this.getCurrentTime();
     },
     mounted() {
@@ -344,6 +347,7 @@ export default {
     background-color: #fdb827;
 }
 .submit-button:hover {
+    cursor: pointer;
     transition: 0.5s;
     color: #fdfdfd;
     background-color: #23120b;
