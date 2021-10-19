@@ -5,6 +5,11 @@
 <script>
 export default {
     name: "Home",
+    beforeCreate() {
+        this.$store.commit("initLatitude");
+        this.$store.commit("initLongitude");
+        this.$store.commit("initLocationName");
+    },
 };
 </script>
 
@@ -18,6 +23,6 @@ export default {
     min-height: 100vh;
 }
 ::selection {
-    background-color: #FDB827;
+    background-color: #fdb827;
 }
 </style>

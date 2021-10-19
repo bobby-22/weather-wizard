@@ -3,10 +3,16 @@
         <div class="main-card">
             <form class="search-bar" action="">
                 <div class="search-icon">
-                    <i class="fas fa-search"></i>
+                    <i class="fas fa-map-marker-alt"></i>
                 </div>
-                <input class="search-input" placeholder="Search a city..." />
-                <div class="submit-button">Search</div>
+                <input
+                    class="search-input"
+                    placeholder="Search a city..."
+                    ref="locationInput"
+                />
+                <div class="submit-button" v-on:click="setLocationData()">
+                    Save
+                </div>
             </form>
             <div class="main-weather-condition">
                 <img src="../assets/cloud_rain_storm_sun.png" />
@@ -33,7 +39,7 @@
                 <img class="radar" src="../assets/radar.png" />
                 <div class="city">
                     <img src="../assets/munich.jpg" />
-                    <h1 class="city-name">Munich</h1>
+                    <h1 class="city-name">{{ locationName }}</h1>
                     <div class="city-controls">
                         <i class="fas fa-chevron-left"></i>
                         <i class="fas fa-chevron-right"></i>
@@ -187,6 +193,10 @@ export default {
         return {
             currentConditions: Object,
             currentConditionsPop: Object,
+            locationInput: null,
+            latitude: this.$store.state.latitude,
+            longitude: this.$store.state.longitude,
+            locationName: this.$store.state.locationName,
             hourlyConditions: null,
             dailyConditions: null,
             currentDayIndex: 0,
@@ -197,7 +207,7 @@ export default {
         async getCurrentWeather() {
             try {
                 let weatherResponse = await weatherAPI.get(
-                    `/data/2.5/onecall?lat=48.1374&lon=11.5755&exclude=minutely&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
+                    `/data/2.5/onecall?lat=${this.latitude}&lon=${this.longitude}&exclude=minutely&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
                 );
                 this.currentConditions = weatherResponse.data.current;
                 this.currentConditionsPop = weatherResponse.data.hourly[0];
@@ -206,6 +216,22 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+        getAutocomplete() {
+            this.locationInput = new google.maps.places.Autocomplete(
+                this.$refs.locationInput,
+                { types: ["(regions)"] }
+            );
+        },
+        setLocationData() {
+            let locationData = this.locationInput.getPlace();
+            this.latitude = locationData.geometry.location.lat();
+            this.$store.commit("setLatitude", this.latitude);
+            this.longitude = locationData.geometry.location.lng();
+            this.$store.commit("setLongitude", this.latitude);
+            this.locationName = locationData.name;
+            this.$store.commit("setLocationName", this.locationName);
+            console.log(locationData);
         },
         switchTodayView() {
             this.isToday = true;
@@ -291,10 +317,10 @@ export default {
     },
     created() {
         this.getCurrentWeather();
-        console.log(this.getWindDirection(1));
         this.getCurrentTime();
     },
     mounted() {
+        this.getAutocomplete();
         setInterval(() => {
             this.getCurrentTime();
         }, 30000);
@@ -303,6 +329,11 @@ export default {
         currentDayIndex: {
             handler: function() {
                 this.getDayName();
+            },
+        },
+        latitude: {
+            handler: function() {
+                this.getCurrentWeather();
             },
         },
     },
