@@ -32,7 +32,7 @@
                 </span>
                 <span class="additional-info-pop">
                     <i class="fas fa-tint"></i>
-                    {{ roundNumber(currentConditionsPop.pop * 100) }}%
+                    {{ roundPop(currentConditionsPop.pop * 100) }}%
                 </span>
             </div>
             <div class="media">
@@ -96,6 +96,7 @@
                     v-bind:index="index"
                     v-bind:header="'Now'"
                     v-bind:roundNumber="roundNumber"
+                    v-bind:roundPop="roundPop"
                     v-bind:getTime="getTime"
                 />
             </div>
@@ -108,6 +109,7 @@
                     v-bind:index="index"
                     v-bind:header="'Today'"
                     v-bind:roundNumber="roundNumber"
+                    v-bind:roundPop="roundPop"
                 />
             </div>
             <div class="secondary-card-header" v-if="isToday">
@@ -203,6 +205,10 @@ export default {
         roundNumber(number) {
             let roundedNumber = Math.round(number);
             return roundedNumber;
+        },
+        roundPop(pop) {
+            let formattedPop = Math.round(pop / 10) * 10;
+            return formattedPop;
         },
         getTime(dtValue) {
             let hour = new Date(dtValue * 1000).getHours();
@@ -311,12 +317,10 @@ export default {
         opacity: 1;
     }
 }
-* {
-    animation-name: fade-out;
-    animation-duration: 0.5s;
-}
 .container {
     display: flex;
+    animation-name: fade-out;
+    animation-duration: 0.5s;
 }
 .main-card {
     display: flex;
