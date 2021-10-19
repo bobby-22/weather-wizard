@@ -133,47 +133,6 @@
                     v-bind:getTime="getTime"
                     v-bind:getWindDirection="getWindDirection"
                 />
-                <div class="big-card">
-                    <div class="big-card-header">
-                        Sunrise & Sunset
-                    </div>
-                    <div class="big-card-body">
-                        <div class="big-card-body-top" id="sunrise-time">
-                            <img
-                                class="resize-image"
-                                src="../assets/sunrise.png"
-                            />
-                            <span class="top-info">
-                                <p class="sunrise-time">
-                                    {{
-                                        getTime(
-                                            dailyConditions[currentDayIndex]
-                                                .sunrise
-                                        )
-                                    }}
-                                </p>
-                                <p>in 7 hours and 45 minutes</p>
-                            </span>
-                        </div>
-                        <div class="big-card-body-bottom">
-                            <img
-                                class="resize-image"
-                                src="../assets/sunset.png"
-                            />
-                            <span class="bottom-info">
-                                <p class="sunset-time">
-                                    {{
-                                        getTime(
-                                            dailyConditions[currentDayIndex]
-                                                .sunset
-                                        )
-                                    }}
-                                </p>
-                                <p>in 17 hours and 15 minutes</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -345,10 +304,10 @@ export default {
 
 <style>
 @keyframes fade-out {
-    from {
+    0% {
         opacity: 0;
     }
-    to {
+    100% {
         opacity: 1;
     }
 }

@@ -164,6 +164,31 @@
         </div>
         <ScaleBar v-bind:data="data.pressure - 1000" v-bind:isColored="true" />
     </div>
+    <div class="big-card">
+        <div class="big-card-header">
+            Sunrise & Sunset
+        </div>
+        <div class="big-card-body">
+            <div class="big-card-body-top" id="sunrise-time-special">
+                <img class="resize-image" src="../assets/sunrise.png" />
+                <span class="top-info">
+                    <p class="sunrise-time">
+                        {{ getTime(data.sunrise) }}
+                    </p>
+                    <p>in 7 hours and 45 minutes</p>
+                </span>
+            </div>
+            <div class="big-card-body-bottom">
+                <img class="resize-image" src="../assets/sunset.png" />
+                <span class="bottom-info">
+                    <p class="sunset-time">
+                        {{ getTime(data.sunset) }}
+                    </p>
+                    <p>in 17 hours and 15 minutes</p>
+                </span>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -204,9 +229,6 @@ export default {
             }
         },
     },
-    created() {
-        console.log();
-    },
 };
 </script>
 
@@ -216,6 +238,9 @@ export default {
 }
 #sunrise-time {
     margin-bottom: 0px;
+}
+#sunrise-time-special {
+    margin-bottom: 30px;
 }
 .big-card-body-bottom {
     margin-top: 0px;
