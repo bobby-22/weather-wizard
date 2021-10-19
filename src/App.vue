@@ -9,6 +9,7 @@ export default {
         this.$store.commit("initLatitude");
         this.$store.commit("initLongitude");
         this.$store.commit("initLocationName");
+        this.$store.commit("initLocationImageURL");
     },
 };
 </script>

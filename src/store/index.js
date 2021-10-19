@@ -5,6 +5,7 @@ export default createStore({
         latitude: null,
         longitude: null,
         locationName: null,
+        locationImageURL: null,
     },
     mutations: {
         initLatitude(state) {
@@ -39,6 +40,18 @@ export default createStore({
                 );
             }
         },
+        initLocationImageURL(state) {
+            if (localStorage.getItem("locationImageURL")) {
+                state.locationImageURL = JSON.parse(
+                    localStorage.getItem("locationImageURL")
+                );
+            } else {
+                localStorage.setItem(
+                    "locationImageURL",
+                    JSON.stringify(state.locationImageURL)
+                );
+            }
+        },
         setLatitude(state, latitude) {
             state.latitude = latitude;
             localStorage.setItem("latitude", JSON.stringify(state.latitude));
@@ -52,6 +65,13 @@ export default createStore({
             localStorage.setItem(
                 "locationName",
                 JSON.stringify(state.locationName)
+            );
+        },
+        setLocationImageURL(state, locationImageURL) {
+            state.locationImageURL = locationImageURL;
+            localStorage.setItem(
+                "locationImageURL",
+                JSON.stringify(state.locationImageURL)
             );
         },
     },

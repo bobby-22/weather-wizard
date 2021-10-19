@@ -38,7 +38,7 @@
             <div class="media">
                 <img class="radar" src="../assets/radar.png" />
                 <div class="city">
-                    <img src="../assets/munich.jpg" />
+                    <img v-bind:src="locationImageURL" />
                     <h1 class="city-name">{{ locationName }}</h1>
                     <div class="city-controls">
                         <i class="fas fa-chevron-left"></i>
@@ -197,6 +197,7 @@ export default {
             latitude: this.$store.state.latitude,
             longitude: this.$store.state.longitude,
             locationName: this.$store.state.locationName,
+            locationImageURL: this.$store.state.locationImageURL,
             hourlyConditions: null,
             dailyConditions: null,
             currentDayIndex: 0,
@@ -231,7 +232,8 @@ export default {
             this.$store.commit("setLongitude", this.latitude);
             this.locationName = locationData.name;
             this.$store.commit("setLocationName", this.locationName);
-            console.log(locationData);
+            this.locationImageURL = locationData.photos[0].getUrl();
+            this.$store.commit("setLocationImageURL", this.locationImageURL);
         },
         switchTodayView() {
             this.isToday = true;
@@ -364,6 +366,9 @@ export default {
     padding: 15px;
 }
 .search-input {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     outline: none;
     border: none;
     font-size: 14px;
@@ -375,6 +380,7 @@ export default {
     border-radius: 0px 20px 20px 0px;
     padding: 15px;
     transition: 0.5s;
+    margin-left: 15px;
     background-color: #fdb827;
 }
 .submit-button:hover {
@@ -431,12 +437,12 @@ p {
 .media img {
     object-fit: cover;
     width: 100%;
-    max-height: 170px;
+    height: 185px;
     border-radius: 15px;
 }
 .city {
     position: relative;
-    opacity: 0.8;
+    opacity: 0.5;
     display: flex;
     justify-content: space-between;
     margin-top: 15px;
@@ -598,7 +604,7 @@ p {
     justify-content: space-between;
     border-radius: 15px;
     padding: 15px;
-    min-height: 200px;
+    height: 222px;
     background-color: #fdfdfd;
     animation-name: fade-out;
     animation-duration: 0.2s;
