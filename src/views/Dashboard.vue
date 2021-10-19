@@ -61,7 +61,7 @@
                                       color: '#23120b',
                                       'font-size': '18px',
                                       'font-weight': '700',
-                                      transition: '0.4s',
+                                      transition: '0.5s',
                                   },
                         ]"
                         >Today</span
@@ -77,7 +77,7 @@
                                       color: '#23120b',
                                       'font-size': '18px',
                                       'font-weight': '700',
-                                      transition: '0.4s',
+                                      transition: '0.5s',
                                   },
                         ]"
                         >Weekly</span
@@ -289,7 +289,8 @@ export default {
             let minutes = new Date().getMinutes();
             if (hour < 10) {
                 hour = "0" + hour;
-            } else if (minutes < 10) {
+            }
+            if (minutes < 10) {
                 minutes = "0" + minutes;
             }
             let currentTime = hour + ":" + minutes;
@@ -343,6 +344,18 @@ export default {
 </script>
 
 <style>
+@keyframes fade-out {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+* {
+    animation-name: fade-out;
+    animation-duration: 0.5s;
+}
 .container {
     display: flex;
 }
@@ -442,10 +455,14 @@ p {
 }
 .city {
     position: relative;
-    opacity: 0.5;
     display: flex;
     justify-content: space-between;
+    overflow: hidden;
     margin-top: 15px;
+    border-radius: 15px;
+}
+.city > img {
+    filter: blur(1.5px);
 }
 .city-name {
     position: absolute;
@@ -508,7 +525,7 @@ p {
 .today,
 .weekly {
     padding-bottom: 5px;
-    transition: 0.4s;
+    transition: 0.5s;
     color: #999999;
 }
 .celsius,
@@ -530,30 +547,11 @@ p {
     color: #23120b;
     background-color: #fdfdfd;
 }
-@keyframes fade-out {
-    0% {
-        opacity: 0.2;
-    }
-    25% {
-        opacity: 0.4;
-    }
-    50% {
-        opacity: 0.6;
-    }
-    75% {
-        opacity: 0.8;
-    }
-    100% {
-        opacity: 1;
-    }
-}
 .small-cards {
     display: flex;
     justify-content: space-between;
     column-gap: 10px;
     margin-top: 30px;
-    animation-name: fade-out;
-    animation-duration: 0.3s;
 }
 .small-card {
     display: flex;
@@ -564,7 +562,7 @@ p {
     height: 150px;
     border-radius: 15px;
     padding: 15px;
-    transition: 0.3s;
+    transition: 0.5s;
     background-color: #fdfdfd;
 }
 .small-card-header-1,
@@ -604,10 +602,8 @@ p {
     justify-content: space-between;
     border-radius: 15px;
     padding: 15px;
-    height: 222px;
+    height: 222.7px;
     background-color: #fdfdfd;
-    animation-name: fade-out;
-    animation-duration: 0.2s;
 }
 .big-card-header {
     font-size: 14px;
