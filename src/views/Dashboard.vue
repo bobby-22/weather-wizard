@@ -11,7 +11,7 @@
                     ref="locationInput"
                 />
                 <div class="submit-button" v-on:click="setLocationData()">
-                    Add
+                    Save
                 </div>
             </form>
             <div class="main-weather-condition">
@@ -289,12 +289,12 @@ export default {
     },
     watch: {
         currentDayIndex: {
-            handler: function() {
+            handler: function () {
                 this.getDayName();
             },
         },
         latitude: {
-            handler: function() {
+            handler: function () {
                 this.getCurrentWeather();
             },
         },
