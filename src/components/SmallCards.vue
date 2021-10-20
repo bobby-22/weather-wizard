@@ -14,8 +14,11 @@
         <div class="small-card-header-1" v-else-if="header === 'Today'">
             {{ getDay(data.dt) }}
         </div>
-        <div class="small-card-header-2" v-if="roundPop(data.pop * 100) != 0">
-            {{ roundPop(data.pop * 100) }}%
+        <div
+            class="small-card-header-2"
+            v-if="roundNumber(data.pop * 10) * 10 != 0"
+        >
+            {{ roundNumber(data.pop * 10) * 10 }}%
         </div>
         <div class="small-card-body">
             <img src="../assets/cloud_rain.png" />
@@ -38,7 +41,6 @@ export default {
         index: null,
         header: "",
         roundNumber: { type: Function },
-        roundPop: { type: Function },
         getTime: { type: Function },
     },
     methods: {

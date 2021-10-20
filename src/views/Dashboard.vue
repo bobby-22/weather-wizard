@@ -32,7 +32,7 @@
                 </span>
                 <span class="additional-info-pop">
                     <i class="fas fa-tint"></i>
-                    {{ roundPop(currentConditionsPop.pop * 100) }}%
+                    {{ roundNumber(currentConditionsPop.pop * 10) * 10 }}%
                 </span>
             </div>
             <div class="media">
@@ -96,7 +96,6 @@
                     v-bind:index="index"
                     v-bind:header="'Now'"
                     v-bind:roundNumber="roundNumber"
-                    v-bind:roundPop="roundPop"
                     v-bind:getTime="getTime"
                 />
             </div>
@@ -109,7 +108,6 @@
                     v-bind:index="index"
                     v-bind:header="'Today'"
                     v-bind:roundNumber="roundNumber"
-                    v-bind:roundPop="roundPop"
                 />
             </div>
             <div class="secondary-card-header" v-if="isToday">
@@ -190,7 +188,7 @@ export default {
             this.latitude = locationData.geometry.location.lat();
             this.$store.commit("setLatitude", this.latitude);
             this.longitude = locationData.geometry.location.lng();
-            this.$store.commit("setLongitude", this.latitude);
+            this.$store.commit("setLongitude", this.longitude);
             this.locationName = locationData.name;
             this.$store.commit("setLocationName", this.locationName);
             this.locationImageURL = locationData.photos[0].getUrl();
@@ -205,10 +203,6 @@ export default {
         roundNumber(number) {
             let roundedNumber = Math.round(number);
             return roundedNumber;
-        },
-        roundPop(pop) {
-            let formattedPop = Math.round(pop / 10) * 10;
-            return formattedPop;
         },
         getTime(dtValue) {
             let hour = new Date(dtValue * 1000).getHours();
