@@ -11,7 +11,7 @@
                     ref="locationInput"
                 />
                 <div class="submit-button" v-on:click="setLocationData()">
-                    Save
+                    Add
                 </div>
             </form>
             <div class="main-weather-condition">
