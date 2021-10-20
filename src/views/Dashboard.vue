@@ -303,6 +303,10 @@ export default {
 </script>
 
 <style>
+* {
+    animation-name: fade-out;
+    animation-duration: 0.5s;
+}
 @keyframes fade-out {
     0% {
         opacity: 0;
@@ -310,10 +314,6 @@ export default {
     100% {
         opacity: 1;
     }
-}
-* {
-    animation-name: fade-out;
-    animation-duration: 0.5s;
 }
 .container {
     display: flex;
