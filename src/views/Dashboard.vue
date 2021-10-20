@@ -311,10 +311,12 @@ export default {
         opacity: 1;
     }
 }
-.container {
-    display: flex;
+* {
     animation-name: fade-out;
     animation-duration: 0.5s;
+}
+.container {
+    display: flex;
 }
 .main-card {
     display: flex;
@@ -419,7 +421,7 @@ p {
     border-radius: 15px;
 }
 .city > img {
-    filter: blur(1.5px);
+    filter: blur(1px);
 }
 .city-name {
     position: absolute;

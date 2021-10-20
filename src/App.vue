@@ -1,5 +1,7 @@
 <template>
-    <router-view />
+    <div class="container">
+        <router-view />
+    </div>
 </template>
 
 <script>
@@ -16,12 +18,11 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
-
 * {
     font-family: "Comfortaa", sans-serif;
 }
 .container {
-    min-height: 100vh;
+    background-color: #f5f5f5;
 }
 ::selection {
     background-color: #fdb827;
