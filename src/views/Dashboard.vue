@@ -24,7 +24,10 @@
                 </div>
             </div>
             <div class="additional-info">
-                <span>
+                <span
+                    class="additional-info-day"
+                    v-on:click="scrollToSecondaryCard()"
+                >
                     {{ getCurrentDay() }},
                     <span class="additional-info-time">
                         {{ getCurrentTime() }}
@@ -47,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <div class="secondary-card">
+        <div class="secondary-card" ref="secondaryCard">
             <div class="navbar">
                 <div class="day">
                     <span
@@ -102,7 +105,9 @@
             <div class="small-cards" v-else>
                 <SmallCards
                     v-for="(day, index) in dailyConditions"
-                    v-on:click="currentDayIndex = index"
+                    v-on:click="
+                        (currentDayIndex = index), scrollToSecondaryHeader()
+                    "
                     v-bind:key="day.id"
                     v-bind:data="day"
                     v-bind:index="index"
@@ -110,10 +115,14 @@
                     v-bind:roundNumber="roundNumber"
                 />
             </div>
-            <div class="secondary-card-header" v-if="isToday">
+            <div
+                class="secondary-card-header"
+                ref="secondaryHeader"
+                v-if="isToday"
+            >
                 <h1>Conditions for Now</h1>
             </div>
-            <div class="secondary-card-header" v-else>
+            <div class="secondary-card-header" ref="secondaryHeader" v-else>
                 <h1>Conditions for {{ getDayName() }}</h1>
             </div>
             <div class="big-cards">
@@ -199,6 +208,14 @@ export default {
         },
         switchWeeklyView() {
             this.isToday = false;
+        },
+        scrollToSecondaryCard() {
+            let element = this.$refs.secondaryCard;
+            element.scrollIntoView({ behavior: "smooth" });
+        },
+        scrollToSecondaryHeader() {
+            let element = this.$refs.secondaryHeader;
+            element.scrollIntoView({ behavior: "smooth" });
         },
         roundNumber(number) {
             let roundedNumber = Math.round(number);
@@ -289,12 +306,12 @@ export default {
     },
     watch: {
         currentDayIndex: {
-            handler: function () {
+            handler: function() {
                 this.getDayName();
             },
         },
         latitude: {
-            handler: function () {
+            handler: function() {
                 this.getCurrentWeather();
             },
         },
@@ -317,6 +334,8 @@ export default {
 }
 .container {
     display: flex;
+    animation-name: fade-out;
+    animation-duration: 0.5s;
 }
 .main-card {
     display: flex;
@@ -409,7 +428,7 @@ p {
 .media img {
     object-fit: cover;
     width: 100%;
-    height: 185px;
+    height: 210px;
     border-radius: 15px;
 }
 .city {
@@ -417,7 +436,7 @@ p {
     display: flex;
     justify-content: space-between;
     overflow: hidden;
-    margin-top: 15px;
+    margin-top: 5px;
     border-radius: 15px;
 }
 .city > img {
@@ -518,7 +537,7 @@ p {
     justify-content: space-between;
     align-items: center;
     flex-basis: 100%;
-    height: 150px;
+    height: 180px;
     border-radius: 15px;
     padding: 15px;
     transition: 0.5s;
@@ -537,9 +556,8 @@ p {
     color: #21209c;
 }
 .small-card-body img {
-    object-fit: cover;
-    width: 85px;
-    height: 85px;
+    width: 100px;
+    height: 100px;
 }
 .secondary-card-header h1 {
     font-size: 26px;
@@ -551,7 +569,7 @@ p {
 .big-cards {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    height: 100%;
+    width: 100%;
     gap: 15px;
 }
 .big-card {
@@ -561,7 +579,7 @@ p {
     justify-content: space-between;
     border-radius: 15px;
     padding: 15px;
-    height: 222.7px;
+    height: 225px;
     background-color: #fdfdfd;
 }
 .big-card-header {
@@ -613,7 +631,46 @@ p {
     color: #fdb827;
     background-color: #23120b;
 }
-.resize-image {
-    margin-left: -13px;
+@media (max-width: 1920px) {
+    .media img {
+        height: 180px;
+    }
+    .big-card {
+        height: 200px;
+    }
+}
+@media (max-width: 767px) {
+    ::-webkit-scrollbar {
+        height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: #23120b;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+    .main-weather-condition img {
+        width: 250px;
+        height: 250px;
+    }
+    .additional-info {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .additional-info-day {
+        border-bottom: 1px solid #23120b;
+    }
+    .media img {
+        width: 100%;
+        height: 150px;
+    }
+    .small-cards {
+        overflow-x: scroll;
+    }
+    .big-cards {
+        grid-template-columns: 1fr;
+    }
 }
 </style>

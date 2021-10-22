@@ -20,8 +20,9 @@
         >
             {{ roundNumber(data.pop * 10) * 10 }}%
         </div>
+        <div class="small-card-header-2" v-else></div>
         <div class="small-card-body">
-            <img src="../assets/cloud_rain.png" />
+            <img src="../assets/cloud_rain_storm_sun.png" />
         </div>
         <div class="small-card-footer" v-if="header === 'Now'">
             {{ roundNumber(data.temp - 273.15) }}°
