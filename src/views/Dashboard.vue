@@ -428,7 +428,7 @@ p {
 .media img {
     object-fit: cover;
     width: 100%;
-    height: 210px;
+    height: 200px;
     border-radius: 15px;
 }
 .city {
@@ -537,7 +537,7 @@ p {
     justify-content: space-between;
     align-items: center;
     flex-basis: 100%;
-    height: 180px;
+    height: 170px;
     border-radius: 15px;
     padding: 15px;
     transition: 0.5s;
@@ -579,7 +579,7 @@ p {
     justify-content: space-between;
     border-radius: 15px;
     padding: 15px;
-    height: 225px;
+    height: 215px;
     background-color: #fdfdfd;
 }
 .big-card-header {
@@ -631,12 +631,12 @@ p {
     color: #fdb827;
     background-color: #23120b;
 }
-@media (max-width: 1920px) {
+@media (max-width: 1536px) {
     .media img {
-        height: 180px;
+        height: 170px;
     }
     .big-card {
-        height: 200px;
+        height: 189px;
     }
 }
 @media (max-width: 767px) {
