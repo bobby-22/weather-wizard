@@ -15,7 +15,13 @@
                 </div>
             </form>
             <div class="main-weather-condition">
-                <img src="../assets/cloud_rain_storm_sun.png" />
+                <img
+                    v-bind:src="
+                        require(`@/assets/${convertCodeToIcon(
+                            currentConditions.weather[0].icon
+                        )}`)
+                    "
+                />
                 <div class="main-card-header">
                     <h1>
                         Currently
@@ -98,6 +104,7 @@
                     v-bind:data="hour"
                     v-bind:index="index"
                     v-bind:header="'Now'"
+                    v-bind:icon="convertCodeToIcon(hour.weather[0].icon)"
                     v-bind:roundNumber="roundNumber"
                     v-bind:getTime="getTime"
                 />
@@ -112,6 +119,7 @@
                     v-bind:data="day"
                     v-bind:index="index"
                     v-bind:header="'Today'"
+                    v-bind:icon="convertCodeToIcon(day.weather[0].icon)"
                     v-bind:roundNumber="roundNumber"
                 />
             </div>
@@ -184,6 +192,29 @@ export default {
                 this.dailyConditions = weatherResponse.data.daily.slice(0, 7);
             } catch (error) {
                 console.log(error);
+            }
+        },
+        convertCodeToIcon(icon) {
+            switch (true) {
+                case icon === "11d":
+                    return "cloud_storm.png";
+                case icon === "09d":
+                    return "cloud_shower.png";
+                case icon === "10d":
+                    return "cloud_rain_sun.png";
+                case icon === "13d":
+                    return "cloud_snow.png";
+                case icon === "50d":
+                    return "cloud_fog.png";
+                case icon === "01d" || icon === "01n":
+                    return "sun.png";
+                case icon === "02d" || icon === "02n":
+                    return "cloud_sun.png";
+                case icon === "03d" ||
+                    icon === "03n" ||
+                    icon === "04d" ||
+                    icon === "04n":
+                    return "cloud.png";
             }
         },
         getAutocomplete() {

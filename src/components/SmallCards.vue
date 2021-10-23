@@ -22,7 +22,7 @@
         </div>
         <div class="small-card-header-2" v-else></div>
         <div class="small-card-body">
-            <img src="../assets/cloud_rain_storm_sun.png" />
+            <img v-bind:src="require(`@/assets/${icon}`)" />
         </div>
         <div class="small-card-footer" v-if="header === 'Now'">
             {{ roundNumber(data.temp - 273.15) }}°
@@ -41,8 +41,14 @@ export default {
         data: Object,
         index: null,
         header: "",
+        icon: null,
         roundNumber: { type: Function },
         getTime: { type: Function },
+    },
+    data() {
+        return {
+            weatherIcons: [],
+        };
     },
     methods: {
         getDay(dtValue) {
