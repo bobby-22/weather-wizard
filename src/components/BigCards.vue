@@ -25,13 +25,13 @@
         </div>
         <div class="big-card-body">
             <div class="big-card-body-top" id="sunrise-time">
-                <img class="resize-image" src="../assets/lowest.png" />
+                <img src="../assets/lowest.png" />
                 <span class="top-info-main">
                     {{ roundNumber(data.temp.min - 273.15) }} °C
                 </span>
             </div>
             <div class="big-card-body-bottom">
-                <img class="resize-image" src="../assets/highest.png" />
+                <img src="../assets/highest.png" />
                 <span class="top-info-main">
                     {{ roundNumber(data.temp.max - 273.15) }} °C
                 </span>
@@ -53,7 +53,7 @@
             Wind Speed
         </div>
         <div class="big-card-body-top">
-            <img src="../assets/wind_speed.png" />
+            <img style="margin-left: -3px;" src="../assets/wind_speed.png" />
             <span class="top-info">
                 <span class="top-info-main">
                     {{ data.wind_speed }}
@@ -76,7 +76,7 @@
             UV Index
         </div>
         <div class="big-card-body-top">
-            <img style="margin-left: -5px" src="../assets/uv_index.png" />
+            <img style="margin-left: -2px" src="../assets/uv_index.png" />
             <span class="top-info">
                 <span class="top-info-main">
                     {{ data.uvi }}
@@ -107,7 +107,7 @@
             Humidity
         </div>
         <div class="big-card-body-top">
-            <img class="resize-image" src="../assets/humidity.png" />
+            <img style="margin-left: -13px" src="../assets/humidity.png" />
             <span class="top-info">
                 <span class="top-info-main"> {{ data.humidity }}% </span>
             </span>
@@ -170,7 +170,7 @@
         </div>
         <div class="big-card-body">
             <div class="big-card-body-top" id="sunrise-time-special">
-                <img class="resize-image" src="../assets/sunrise.png" />
+                <img style="margin-left: -10px" src="../assets/sunrise.png" />
                 <span class="top-info">
                     <p class="sunrise-time">
                         {{ getTime(data.sunrise) }}
@@ -179,7 +179,7 @@
                 </span>
             </div>
             <div class="big-card-body-bottom">
-                <img class="resize-image" src="../assets/sunset.png" />
+                <img style="margin-left: -10px" src="../assets/sunset.png" />
                 <span class="bottom-info">
                     <p class="sunset-time">
                         {{ getTime(data.sunset) }}
