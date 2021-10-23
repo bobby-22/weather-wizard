@@ -237,10 +237,10 @@ export default {
     text-transform: capitalize;
 }
 #sunrise-time {
-    margin-bottom: 0px;
+    margin-bottom: -15px;
 }
 #sunrise-time-special {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 .big-card-body-bottom {
     margin-top: 0px;

@@ -196,16 +196,6 @@ export default {
         },
         convertCodeToIcon(icon) {
             switch (true) {
-                case icon === "11d":
-                    return "cloud_storm.png";
-                case icon === "09d":
-                    return "cloud_shower.png";
-                case icon === "10d":
-                    return "cloud_rain_sun.png";
-                case icon === "13d":
-                    return "cloud_snow.png";
-                case icon === "50d":
-                    return "cloud_fog.png";
                 case icon === "01d" || icon === "01n":
                     return "sun.png";
                 case icon === "02d" || icon === "02n":
@@ -215,6 +205,16 @@ export default {
                     icon === "04d" ||
                     icon === "04n":
                     return "cloud.png";
+                case icon === "09d" || icon === "09n":
+                    return "cloud_shower.png";
+                case icon === "10d" || icon === "10n":
+                    return "cloud_rain_sun.png";
+                case icon === "11d" || icon === "11n":
+                    return "cloud_storm.png";
+                case icon === "13d" || icon === "13n":
+                    return "cloud_snow.png";
+                case icon === "50d" || icon === "50n":
+                    return "cloud_fog.png";
             }
         },
         getAutocomplete() {
@@ -662,7 +662,7 @@ p {
     color: #fdb827;
     background-color: #23120b;
 }
-@media (max-width: 1536px) {
+@media (max-width: 1600px) and (max-height: 900px) {
     .media img {
         height: 170px;
     }
@@ -685,6 +685,9 @@ p {
     .main-weather-condition img {
         width: 250px;
         height: 250px;
+    }
+    .main-card-header h1 {
+        font-size: 38px;
     }
     .additional-info {
         margin-top: 15px;

@@ -64,7 +64,7 @@ export default {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 25px;
-    height: 200px;
+    height: inherit;
     background-color: #f1f1f1;
 }
 .circle {

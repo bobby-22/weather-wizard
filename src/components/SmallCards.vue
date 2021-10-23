@@ -45,11 +45,6 @@ export default {
         roundNumber: { type: Function },
         getTime: { type: Function },
     },
-    data() {
-        return {
-            weatherIcons: [],
-        };
-    },
     methods: {
         getDay(dtValue) {
             let dayName = new Date(dtValue * 1000).toLocaleDateString("en-US", {
