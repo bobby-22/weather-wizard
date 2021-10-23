@@ -372,7 +372,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    max-width: 350px;
+    width: 500px;
     padding: 30px;
     background-color: #fdfdfd;
 }
@@ -681,6 +681,9 @@ p {
     .container {
         display: flex;
         flex-direction: column;
+    }
+    .main-card {
+        width: auto;
     }
     .main-weather-condition img {
         width: 250px;

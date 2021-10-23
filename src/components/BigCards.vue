@@ -25,13 +25,13 @@
         </div>
         <div class="big-card-body">
             <div class="big-card-body-top" id="sunrise-time">
-                <img src="../assets/lowest.png" />
+                <img style="margin-left: -17px" src="../assets/lowest.png" />
                 <span class="top-info-main">
                     {{ roundNumber(data.temp.min - 273.15) }} °C
                 </span>
             </div>
             <div class="big-card-body-bottom">
-                <img src="../assets/highest.png" />
+                <img style="margin-left: -17px" src="../assets/highest.png" />
                 <span class="top-info-main">
                     {{ roundNumber(data.temp.max - 273.15) }} °C
                 </span>
