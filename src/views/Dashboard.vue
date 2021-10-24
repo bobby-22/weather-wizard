@@ -535,7 +535,6 @@ p {
 .weekly {
     padding-bottom: 5px;
     transition: 0.5s;
-    -webkit-transition: -0.5s;
     color: #999999;
 }
 .celsius,
