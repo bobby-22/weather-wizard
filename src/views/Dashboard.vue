@@ -8,7 +8,7 @@
                 <input
                     class="search-input"
                     placeholder="Search a city..."
-                    id="locationInput"
+                    ref="locationInput"
                 />
                 <div class="submit-button" v-on:click="setLocationData()">
                     Save
@@ -220,7 +220,7 @@ export default {
         },
         getAutocomplete() {
             this.locationInput = new google.maps.places.Autocomplete(
-                document.getElementById("locationInput"),
+                this.$refs.locationInput,
                 { types: ["(regions)"] }
             );
         },
