@@ -298,13 +298,14 @@ export default {
         getCurrentTime() {
             let hour = new Date().getHours();
             let minutes = new Date().getMinutes();
+            let seconds = new Date().getSeconds();
             if (hour < 10) {
                 hour = "0" + hour;
             }
             if (minutes < 10) {
                 minutes = "0" + minutes;
             }
-            let currentTime = hour + ":" + minutes;
+            let currentTime = hour + ":" + minutes + ":" + seconds;
             this.currentTime = currentTime;
         },
         getWindDirection(degree) {
