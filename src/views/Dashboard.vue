@@ -8,7 +8,7 @@
                 <input
                     class="search-input"
                     placeholder="Search a city..."
-                    ref="locationInput"
+                    id="locationInput"
                 />
                 <div class="submit-button" v-on:click="setLocationData()">
                     Save
@@ -159,6 +159,7 @@
 import SmallCards from "../components/SmallCards.vue";
 import BigCards from "../components/BigCards.vue";
 import weatherAPI from "../axios";
+import { loadedGoogleMapsAPI } from "@/main";
 export default {
     name: "Dashboard",
     components: {
@@ -219,7 +220,7 @@ export default {
         },
         getAutocomplete() {
             this.locationInput = new google.maps.places.Autocomplete(
-                this.$refs.locationInput,
+                document.getElementById("locationInput"),
                 { types: ["(regions)"] }
             );
         },
@@ -330,7 +331,9 @@ export default {
         this.getCurrentTime();
     },
     mounted() {
-        this.getAutocomplete();
+        loadedGoogleMapsAPI.then(() => {
+            this.getAutocomplete();
+        });
         setInterval(() => {
             this.getCurrentTime();
         }, 30000);

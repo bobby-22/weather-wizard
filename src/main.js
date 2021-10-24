@@ -16,7 +16,7 @@ export const loadedGoogleMapsAPI = new Promise((resolve, reject) => {
 
     GMap.setAttribute(
         "src",
-        `https://maps.googleapis.com/maps/api/js?key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}&libraries=places`
+        `https://maps.googleapis.com/maps/api/js?key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}&callback=GoogleMapsInit&libraries=places`
     );
 
     document.body.appendChild(GMap);
