@@ -62,4 +62,9 @@ export default {
     transition: 0.2s;
     box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 20px;
 }
+@media (max-width: 767px) {
+    .small-card-weekly:hover {
+        box-shadow: none;
+    }
+}
 </style>
