@@ -331,9 +331,7 @@ export default {
         this.getCurrentTime();
     },
     mounted() {
-        loadedGoogleMapsAPI.then(() => {
-            this.getAutocomplete();
-        });
+        this.getAutocomplete();
         setInterval(() => {
             this.getCurrentTime();
         }, 30000);
