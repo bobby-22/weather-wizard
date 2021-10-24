@@ -37,7 +37,7 @@
                 >
                     {{ getCurrentDay() }},
                     <span class="additional-info-time">
-                        {{ getCurrentTime() }}
+                        {{ currentTime }}
                     </span>
                 </span>
                 <span class="additional-info-pop">
@@ -179,6 +179,7 @@ export default {
             locationImageURL: this.$store.state.locationImageURL,
             hourlyConditions: null,
             dailyConditions: null,
+            currentTime: null,
             currentDayIndex: 0,
             isToday: true,
         };
@@ -304,7 +305,7 @@ export default {
                 minutes = "0" + minutes;
             }
             let currentTime = hour + ":" + minutes;
-            return currentTime;
+            this.currentTime = currentTime;
         },
         getWindDirection(degree) {
             /*
@@ -327,10 +328,14 @@ export default {
                 return "Northerly";
             } else return direction;
         },
+        setTitle() {
+            document.title = "Weather Wizard";
+        },
     },
     created() {
         this.getCurrentWeather();
         this.getCurrentTime();
+        this.setTitle();
     },
     mounted() {
         setInterval(() => {
