@@ -160,7 +160,6 @@
 import SmallCards from "../components/SmallCards.vue";
 import BigCards from "../components/BigCards.vue";
 import weatherAPI from "../axios";
-import { loadedGoogleMapsAPI } from "@/main";
 export default {
     name: "Dashboard",
     components: {
