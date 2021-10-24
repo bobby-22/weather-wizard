@@ -306,7 +306,7 @@ export default {
                 minutes = "0" + minutes;
             }
             if (seconds < 10) {
-                minutes = "0" + seconds;
+                seconds = "0" + seconds;
             }
             let currentTime = hour + ":" + minutes + ":" + seconds;
             this.currentTime = currentTime;
