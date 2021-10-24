@@ -305,6 +305,9 @@ export default {
             if (minutes < 10) {
                 minutes = "0" + minutes;
             }
+            if (seconds < 10) {
+                minutes = "0" + seconds;
+            }
             let currentTime = hour + ":" + minutes + ":" + seconds;
             this.currentTime = currentTime;
         },
@@ -341,7 +344,7 @@ export default {
     mounted() {
         setInterval(() => {
             this.getCurrentTime();
-        }, 30000);
+        }, 1000);
     },
     watch: {
         currentDayIndex: {
