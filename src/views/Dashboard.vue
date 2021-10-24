@@ -308,8 +308,7 @@ export default {
             if (seconds < 10) {
                 seconds = "0" + seconds;
             }
-            let currentTime = hour + ":" + minutes + ":" + seconds;
-            this.currentTime = currentTime;
+            this.currentTime = hour + ":" + minutes + ":" + seconds;
         },
         getWindDirection(degree) {
             /*
