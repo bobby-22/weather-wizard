@@ -8,7 +8,8 @@
                 <input
                     class="search-input"
                     placeholder="Search a city..."
-                    ref="locationInput"
+                    id="locationInput"
+                    v-on:click="getAutocomplete()"
                 />
                 <div class="submit-button" v-on:click="setLocationData()">
                     Save
@@ -195,6 +196,12 @@ export default {
                 console.log(error);
             }
         },
+        getAutocomplete() {
+            this.locationInput = new google.maps.places.Autocomplete(
+                document.getElementById("locationInput"),
+                { types: ["(regions)"] }
+            );
+        },
         convertCodeToIcon(icon) {
             switch (true) {
                 case icon === "01d" || icon === "01n":
@@ -217,12 +224,6 @@ export default {
                 case icon === "50d" || icon === "50n":
                     return "cloud_fog.png";
             }
-        },
-        getAutocomplete() {
-            this.locationInput = new google.maps.places.Autocomplete(
-                this.$refs.locationInput,
-                { types: ["(regions)"] }
-            );
         },
         setLocationData() {
             let locationData = this.locationInput.getPlace();
@@ -331,7 +332,6 @@ export default {
         this.getCurrentTime();
     },
     mounted() {
-        this.getAutocomplete();
         setInterval(() => {
             this.getCurrentTime();
         }, 30000);
