@@ -46,13 +46,33 @@
                 </span>
             </div>
             <div class="media">
-                <img class="radar" src="../assets/radar.png" />
                 <div class="city">
                     <img v-bind:src="locationImageURL" />
                     <h1 class="city-name">{{ locationName }}</h1>
                     <div class="city-controls">
                         <i class="fas fa-chevron-left"></i>
                         <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="info">
+                    <div>
+                        Favicon made by
+                        <a href="https://www.freepik.com">Freepik</a>
+                        from
+                        <a href="https://www.flaticon.com/">www.flaticon.com</a>
+                    </div>
+                    <div class="weather-icons-credits">
+                        Weather icons made by
+                        <a href="https://www.iconfinder.com/Neolau1119"
+                            >Sihan Liu</a
+                        >
+                        from
+                        <a href="https://www.iconfinder.com/"
+                            >www.iconfinder.com</a
+                        >
+                    </div>
+                    <div>
+                        &#169; 2021 weather-wizard.xyz
                     </div>
                 </div>
             </div>
@@ -413,13 +433,14 @@ export default {
     padding: 15px;
     transition: 0.5s;
     margin-left: 15px;
-    background-color: #fdb827;
+    color: #fdfdfd;
+    background-color: #23120b;
 }
 .submit-button:hover {
     cursor: pointer;
     transition: 0.5s;
-    color: #fdfdfd;
-    background-color: #23120b;
+    color: #23120b;
+    background-color: #fdb827;
 }
 .main-weather-condition {
     display: flex;
@@ -466,22 +487,40 @@ p {
 .current-condition {
     text-transform: capitalize;
 }
+.info {
+    text-align: center;
+    line-height: 1.5;
+    border-radius: 15px;
+    padding: 15px;
+    margin-top: 10px;
+    font-weight: 300;
+    color: #999999;
+    background-color: #f5f5f5;
+}
+.weather-icons-credits {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+a {
+    text-decoration: none;
+    color: #4a4a4a;
+}
+a:link,
+a:active,
+a:visited {
+    color: #23120b;
+}
 .media img {
     object-fit: cover;
     width: 100%;
     height: 200px;
-    border-radius: 15px;
 }
 .city {
     position: relative;
     display: flex;
     justify-content: space-between;
     overflow: hidden;
-    margin-top: 5px;
     border-radius: 15px;
-}
-.city > img {
-    filter: blur(1px);
 }
 .city-name {
     position: absolute;
@@ -564,8 +603,14 @@ p {
     background-color: #23120b;
 }
 .fahrenheit {
+    transition: 0.5s;
     color: #23120b;
     background-color: #fdfdfd;
+}
+.fahrenheit:hover {
+    cursor: pointer;
+    transition: 0.5s;
+    background-color: #fdb827;
 }
 .small-cards {
     display: flex;
