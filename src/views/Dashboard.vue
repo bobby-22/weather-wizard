@@ -49,10 +49,6 @@
                 <div class="city">
                     <img v-bind:src="locationImageURL" />
                     <h1 class="city-name">{{ locationName }}</h1>
-                    <div class="city-controls">
-                        <i class="fas fa-chevron-left"></i>
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
                 </div>
                 <div class="info">
                     <div>
@@ -528,35 +524,6 @@ a:visited {
     margin: 0px;
     font-weight: 700;
     color: #fdfdfd;
-}
-.city-controls {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.fas.fa-chevron-left,
-.fas.fa-chevron-right {
-    display: inline-block;
-    text-align: center;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
-    margin-left: 15px;
-    margin-right: 15px;
-    opacity: 0.5;
-    transition: opacity 0.5s;
-    color: #23120b;
-    background-color: #fdfdfd;
-}
-.fas.fa-chevron-left:hover,
-.fas.fa-chevron-right:hover {
-    opacity: 0.8;
 }
 .secondary-card {
     display: flex;
