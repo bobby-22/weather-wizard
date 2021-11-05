@@ -92,7 +92,6 @@
                                       'font-size': '18px',
                                       'font-weight': '700',
                                       transition: '0.5s',
-                                      '-webkit-transition': '0.5s',
                                   },
                         ]"
                         >Today</span
@@ -109,7 +108,6 @@
                                       'font-size': '18px',
                                       'font-weight': '700',
                                       transition: '0.5s',
-                                      '-webkit-transition': '0.5s',
                                   },
                         ]"
                         >Weekly</span
@@ -584,7 +582,6 @@ a:visited {
 .weekly {
     padding-bottom: 5px;
     transition: 0.5s;
-    -webkit-transition: 0.5s;
     color: #999999;
 }
 .celsius,
