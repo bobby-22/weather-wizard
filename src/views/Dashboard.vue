@@ -218,6 +218,17 @@ export default {
                 { types: ["(regions)"] }
             );
         },
+        setLocationData() {
+            let locationData = this.locationInput.getPlace();
+            this.latitude = locationData.geometry.location.lat();
+            this.$store.commit("setLatitude", this.latitude);
+            this.longitude = locationData.geometry.location.lng();
+            this.$store.commit("setLongitude", this.longitude);
+            this.locationName = locationData.name;
+            this.$store.commit("setLocationName", this.locationName);
+            this.locationImageURL = locationData.photos[0].getUrl();
+            this.$store.commit("setLocationImageURL", this.locationImageURL);
+        },
         convertCodeToIcon(icon) {
             switch (true) {
                 case icon === "01d" || icon === "01n":
@@ -240,17 +251,6 @@ export default {
                 case icon === "50d" || icon === "50n":
                     return "cloud_fog.png";
             }
-        },
-        setLocationData() {
-            let locationData = this.locationInput.getPlace();
-            this.latitude = locationData.geometry.location.lat();
-            this.$store.commit("setLatitude", this.latitude);
-            this.longitude = locationData.geometry.location.lng();
-            this.$store.commit("setLongitude", this.longitude);
-            this.locationName = locationData.name;
-            this.$store.commit("setLocationName", this.locationName);
-            this.locationImageURL = locationData.photos[0].getUrl();
-            this.$store.commit("setLocationImageURL", this.locationImageURL);
         },
         switchTodayView() {
             this.isToday = true;

@@ -6,7 +6,7 @@ export default createStore({
         longitude: -74.0059728,
         locationName: "New York",
         locationImageURL:
-            "https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAap_uEBfp6BWVd06gQuQskn8eeW3v5OK009bY6j4HI3x-cxJ2an9T2qMarBCoq6C94x9l_qR095LWhJUyL9SMj2IZ-rUXAjdrqiFTr87Ja9O_FcW7iEO3DbX1ubFhh3xwiQptH7Int_8wwYBwHlnaFFWDvEytLxKXg1NDaZU7pIlseppuscM&3u3648&5m1&2e1&callback=none&key=AIzaSyDZtsUUOMZsh34qXB5NOXRPS0EXI7bNCZI&token=112369",
+            "https://lh3.googleusercontent.com/places/AAcXr8pEzdrTJYazKARAe5TKvzSDzXTn4IupypIeUSO71SALu-gPQcTE3yrNqk_o7dZz-n2UcJ9tgpqky4lRa1Ar3h3xjZhM6-yb_VU=s1600-w4032",
     },
     mutations: {
         initLatitude(state) {
